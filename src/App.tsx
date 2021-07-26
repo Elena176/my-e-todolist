@@ -70,6 +70,13 @@ function changeTaskStatus (taskId: string, newIsDone: boolean, todolistId: strin
     setTasks(copyTasks);
 }
 
+function removeTodolist (todolistId: string) {
+setTodolists(todolists.filter(tl => tl.id !== todolistId))
+    const copyTasks = {...tasks}
+    delete copyTasks[todolistId]
+    setTasks(copyTasks)
+}
+
     function getFilteredTask (tl: TodolistType) {                    //фильтрование тасок
         switch (tl.filter) {
             case('active'):
@@ -97,6 +104,7 @@ function changeTaskStatus (taskId: string, newIsDone: boolean, todolistId: strin
                         changeTodolistFilter={changeTodolistFilter}
                         addTask={addTask}
                         changeTaskStatus={changeTaskStatus}
+                        removeTodolist={removeTodolist}
                     />
                 })
             }
