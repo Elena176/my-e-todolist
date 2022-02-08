@@ -1,5 +1,11 @@
+.App {
+    display: flex;
+    justify-content: center;
+  margin: 50px;
+}
+
 .error {
-border: red 1px solid;
+    border: red 1px solid;
 }
 
 .error-message {

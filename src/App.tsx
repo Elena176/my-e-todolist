@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import './App.css';
 import {Todolist} from './components/Todolist';
 import {v1} from 'uuid';
+import {AddItemForm} from './components/AddItemForm';
 
 export type FilterType = 'all' | 'active' | 'completed'
 export type TaskType = {
@@ -46,13 +47,13 @@ const todolistId2 = v1();
         setTodolists(todolists.map(tl => tl.id === todolistId ? {...tl, filter: value} : tl));   //в тудулистах
     }
 
-
-    function removeTask (id: string, todolistId: string) {                          // удаление таски в тудулисте
+    // удаление таски в тудулисте
+    function removeTask (id: string, todolistId: string) {
         tasks[todolistId] = tasks[todolistId].filter(t => t.id !== id)
         setTasks({...tasks});
     }
 
-
+//добавление таски
     function addTask (title: string, todolistId: string) {
         let task = {                                        //создаем обьект - новую таску
             id: v1(),
@@ -60,8 +61,8 @@ const todolistId2 = v1();
             isDone: false
         }
 
-         tasks[todolistId] = [task, ...tasks[todolistId]];                     //в переменную записываем массив тасок
-        setTasks({...tasks});                                  //отрисовываем новый массив
+         tasks[todolistId] = [task, ...tasks[todolistId]];
+        setTasks({...tasks});
     }
 
 function changeTaskStatus (taskId: string, newIsDone: boolean, todolistId: string) {
@@ -77,7 +78,17 @@ setTodolists(todolists.filter(tl => tl.id !== todolistId))
     setTasks(copyTasks)
 }
 
-    function getFilteredTask (tl: TodolistType) {                    //фильтрование тасок
+const addTodolist = (title: string) => {
+        let newTodolistId = v1();
+        let newTodolist: TodolistType = {id:newTodolistId, title: title, filter: 'all'}
+        setTodolists([newTodolist, ...todolists]);
+        setTasks({
+            ...tasks,
+            [newTodolistId]: []
+        })
+}
+    //фильтрование тасок
+    function getFilteredTask (tl: TodolistType) {
         switch (tl.filter) {
             case('active'):
                 return tasks[tl.id].filter(t => !t.isDone);
@@ -91,11 +102,12 @@ setTodolists(todolists.filter(tl => tl.id !== todolistId))
 
     return (
         <div className="App">
+            <AddItemForm addItem={addTodolist}/>
             {
                 todolists.map(tl => {
                     let tasksForTodolist = getFilteredTask(tl);
                     return <Todolist
-                       // key={tl.id}
+                        key={tl.id}
                         title={tl.title}
                         tasks={tasksForTodolist}
                         filter={tl.filter}
