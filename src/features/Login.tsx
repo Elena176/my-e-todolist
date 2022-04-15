@@ -12,12 +12,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {loginTC} from './authReducer';
 import {AppRootStateType} from '../app/store';
 import {Navigate} from 'react-router-dom';
-
-type FormikErrorType = {
-    email?: string
-    password?: string
-    rememberMe?: boolean
-}
+import {LoginParamsType} from '../api/todolists-api';
 
 export const Login = () => {
 const dispatch = useDispatch();
@@ -30,7 +25,8 @@ const isLoginIn = useSelector<AppRootStateType, boolean>(state => state.auth.isL
             rememberMe: false
         },
         validate: (values) => {
-            const errors: FormikErrorType = {};
+           /* const errors: Partial<Omit<LoginParamsType, 'captcha'>> = {};*/
+            const errors: Partial<Pick<LoginParamsType, 'password' | 'email' | 'rememberMe'>> = {};
             if (!values.email) {
                 errors.email = 'Required';
             } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {

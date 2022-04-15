@@ -101,14 +101,9 @@ export type TaskType = {
     order: number
     addedDate: string
 }
-export type UpdateTaskModelType = {
-    title: string
-    description: string
-    status: TaskStatuses
-    priority: TaskPriorities
-    startDate: string
-    deadline: string
-}
+
+export type UpdateTaskModelType = Pick<TaskType, 'title' | 'description' | 'status' | 'priority' | 'startDate' | 'deadline'>
+
 type GetTasksResponse = {
     error: string | null
     totalCount: number
