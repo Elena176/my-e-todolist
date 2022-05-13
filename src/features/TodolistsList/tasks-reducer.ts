@@ -41,7 +41,7 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Actio
 
 // actions
 export const removeTaskAC = (taskId: string, todolistId: string) => ({type: 'REMOVE-TASK', taskId, todolistId} as const)
-export const addTaskAC = (task: TaskType) => ({type: 'ADD-TASK', task} as const)
+export const addTaskAC = (task: TaskType, todolistId: string) => ({type: 'ADD-TASK', task, todolistId} as const)
 export const updateTaskAC = (taskId: string, model: UpdateDomainTaskModelType, todolistId: string) => ({
   type: 'UPDATE-TASK',
   model,
@@ -77,7 +77,7 @@ export const addTaskTC = (title: string, todolistId: string) => (dispatch: Dispa
     .then(res => {
       if (res.data.resultCode === 0) {
         const task = res.data.data.item
-        const action = addTaskAC(task)
+        const action = addTaskAC(task, todolistId)
         dispatch(action)
         dispatch(setAppStatusAC('succeeded'))
       } else {
