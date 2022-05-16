@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useCallback, useEffect} from 'react'
 import './App.css'
 import {TodolistsList} from '../features/TodolistsList/TodolistsList'
 import {useDispatch, useSelector} from 'react-redux'
@@ -13,9 +13,10 @@ import Container from '@mui/material/Container';
 import LinearProgress from '@mui/material/LinearProgress';
 import {Menu} from '@mui/icons-material';
 import {ErrorSnackbar} from '../components/ErrorSnackbar/ErrorSnackbar'
-import {Login} from '../features/Login';
 import {Navigate, Route, Routes} from 'react-router-dom';
 import {CircularProgress} from '@mui/material';
+import {Login} from '../features/Login/Login';
+import {logOutTC} from '../features/Login/authReducer';
 
 type PropsType = {
   demo?: boolean
@@ -25,6 +26,11 @@ function App({demo = false}: PropsType) {
   const dispatch = useDispatch();
   const status = useSelector<AppRootStateType, RequestStatusType>((state) => state.app.status)
   const isInitialized = useSelector<AppRootStateType, boolean>((state) => state.app.isInitialized)
+  const isLoggedIn = useSelector<AppRootStateType, boolean>((state) => state.auth.isLoggedIn)
+
+  const logOutHandler = useCallback(() => {
+dispatch(logOutTC())
+  },[dispatch])
 
   useEffect(() => {
     dispatch(initializeAppTC())
@@ -36,6 +42,8 @@ function App({demo = false}: PropsType) {
       <CircularProgress/>
     </div>
   }
+
+
   return (
     <div className="App">
       <ErrorSnackbar/>
@@ -47,7 +55,8 @@ function App({demo = false}: PropsType) {
           <Typography variant="h6">
             News
           </Typography>
-          <Button color="inherit">Login</Button>
+          {isLoggedIn ? <Button color="inherit" onClick={logOutHandler}>Log Out</Button> :
+          <Button color="inherit">Login</Button>}
         </Toolbar>
         {status === 'loading' && <LinearProgress/>}
       </AppBar>

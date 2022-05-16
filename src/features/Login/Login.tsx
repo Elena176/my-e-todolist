@@ -9,10 +9,10 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import {useFormik} from 'formik';
 import {useDispatch, useSelector} from 'react-redux';
-import {loginTC} from './authReducer';
-import {AppRootStateType} from '../app/store';
 import {Navigate} from 'react-router-dom';
-import {LoginParamsType} from '../api/todolists-api';
+import {loginTC} from './authReducer';
+import {AppRootStateType} from '../../app/store';
+import {LoginParamsType} from '../../api/todolists-api';
 
 export const Login = () => {
 const dispatch = useDispatch();
