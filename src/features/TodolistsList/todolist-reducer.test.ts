@@ -30,7 +30,7 @@ test('correct todolist should be removed', () => {
 
 test('correct todolist should be added', () => {
   let newTodolist:TodolistType = {
-    id: todoListId1,
+    id: 'todoListId3',
     title: 'New Todolist',
     addedDate: '',
     order: 0
@@ -65,3 +65,4 @@ test('correct entity status of todolist should be changed', () => {
   expect(endState[0].entityStatus).toBe(newStatus)
   expect(endState[1].entityStatus).toBe('idle')
 })
+
