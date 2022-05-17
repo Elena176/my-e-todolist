@@ -1,13 +1,18 @@
 import {TodolistType} from '../../api/todolists-api';
 import {
-  addTodolistAC, changeTodolistEntityStatusAC, changeTodolistFilterAC, changeTodolistTitleAC,
+  addTodolistAC,
+  changeTodolistEntityStatusAC,
+  changeTodolistFilterAC,
+  changeTodolistTitleAC,
   FilterValuesType,
-  removeTodolistAC, setTodolistsAC,
+  removeTodolistAC,
+  setTodolistsAC,
   TodolistDomainType,
   todolistsReducer
 } from './todolists-reducer';
 import {v1} from 'uuid';
 import {RequestStatusType} from '../../app/app-reducer';
+import {requestStatus} from '../../enum/requestStatus';
 
 let todoListId1: string
 let todoListId2: string
@@ -18,8 +23,8 @@ beforeEach(() => {
   todoListId1 = v1();
   todoListId2 = v1();
   startState = [
-    {id: todoListId1, title: 'What to learn', filter: 'all', addedDate: '', order: 0, entityStatus: 'idle'},
-    {id: todoListId2, title: 'What to buy', filter: 'all', addedDate: '', order: 0, entityStatus: 'idle'}
+    {id: todoListId1, title: 'What to learn', filter: 'all', addedDate: '', order: 0, entityStatus: requestStatus.idle},
+    {id: todoListId2, title: 'What to buy', filter: 'all', addedDate: '', order: 0, entityStatus: requestStatus.idle}
   ]
 })
 test('correct todolist should be removed', () => {
@@ -60,9 +65,9 @@ test('todoLists should be added', () => {
 })
 
 test('correct entity status of todolist should be changed', () => {
-  let newStatus: RequestStatusType = 'loading'
-  const endState =  todolistsReducer(startState, changeTodolistEntityStatusAC(todoListId1, newStatus))
+  let newStatus: RequestStatusType = requestStatus.loading
+  const endState =  todolistsReducer(startState, changeTodolistEntityStatusAC(todoListId1, {status: newStatus}))
   expect(endState[0].entityStatus).toBe(newStatus)
-  expect(endState[1].entityStatus).toBe('idle')
+  expect(endState[1].entityStatus).toBe(requestStatus.idle)
 })
 

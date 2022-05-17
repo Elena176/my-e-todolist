@@ -3,6 +3,7 @@ import {Dispatch} from 'redux'
 import {RequestStatusType, setAppStatusAC} from '../../app/app-reducer'
 import {fetchTasksTC} from './tasks-reducer';
 import {requestStatus} from '../../enum/requestStatus';
+import {handleServerNetworkError} from '../../utils/error-utils';
 
 const initialState: Array<TodolistDomainType> = []
 
@@ -85,6 +86,9 @@ export const addTodolistTC = (title: string) => {
       .then((res) => {
         dispatch(addTodolistAC(res.data.data.item))
         dispatch(setAppStatusAC({status: requestStatus.succeeded}))
+      })
+      .catch((error) => {
+        handleServerNetworkError(error, dispatch)
       })
   }
 }
