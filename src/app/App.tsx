@@ -43,7 +43,6 @@ dispatch(logOutTC())
     </div>
   }
 
-
   return (
     <div className="App">
       <ErrorSnackbar/>
