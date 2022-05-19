@@ -11,7 +11,7 @@ import {FilterValuesType, TodolistDomainType} from '../todolists-reducer'
 type PropsType = {
   todolist: TodolistDomainType
   tasks: Array<TaskType>
-  changeFilter: (value: FilterValuesType, todolistId: string) => void
+  changeFilter: (todolistId: string, value: FilterValuesType) => void
   addTask: (title: string, todolistId: string) => void
   changeTaskStatus: (id: string, status: TaskStatuses, todolistId: string) => void
   changeTaskTitle: (taskId: string, newTitle: string, todolistId: string) => void
@@ -44,9 +44,9 @@ export const Todolist = React.memo(function ({
     changeTodolistTitle(todolist.id, title)
   }, [todolist.id, changeTodolistTitle])
 
-  const onAllClickHandler = useCallback(() => changeFilter('all', todolist.id), [todolist.id, changeFilter])
-  const onActiveClickHandler = useCallback(() => changeFilter('active', todolist.id), [todolist.id, changeFilter])
-  const onCompletedClickHandler = useCallback(() => changeFilter('completed', todolist.id), [todolist.id, changeFilter])
+  const onAllClickHandler = useCallback(() => changeFilter(todolist.id, 'all'), [todolist.id, changeFilter])
+  const onActiveClickHandler = useCallback(() => changeFilter(todolist.id, 'active'), [todolist.id, changeFilter])
+  const onCompletedClickHandler = useCallback(() => changeFilter(todolist.id, 'completed'), [todolist.id, changeFilter])
 
 
   let tasksForTodolist = tasks
