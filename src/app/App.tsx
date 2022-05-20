@@ -28,12 +28,13 @@ function App({demo = false}: PropsType) {
   const isInitialized = useSelector<AppRootStateType, boolean>((state) => state.app.isInitialized)
   const isLoggedIn = useSelector<AppRootStateType, boolean>((state) => state.auth.isLoggedIn)
 
-  const logOutHandler = useCallback(() => {
-dispatch(logOutTC())
-  },[dispatch])
-
   useEffect(() => {
-    dispatch(initializeAppTC())
+    if (!demo) {
+      dispatch(initializeAppTC())
+    }
+  }, [dispatch])
+  const logOutHandler = useCallback(() => {
+    dispatch(logOutTC())
   }, [dispatch])
 
   if (!isInitialized) {
@@ -55,7 +56,7 @@ dispatch(logOutTC())
             News
           </Typography>
           {isLoggedIn ? <Button color="inherit" onClick={logOutHandler}>Log Out</Button> :
-          <Button color="inherit">Login</Button>}
+            <Button color="inherit">Login</Button>}
         </Toolbar>
         {status === 'loading' && <LinearProgress/>}
       </AppBar>
