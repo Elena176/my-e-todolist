@@ -10,10 +10,30 @@ import {AppRootStateType} from '../../app/store'
 import {setAppStatusAC} from '../../app/app-reducer'
 import {handleServerAppError, handleServerNetworkError} from '../../utils/error-utils'
 import {requestStatus} from '../../enum/requestStatus';
-import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 
 const initialState: TasksStateType = {}
 
+export const fetchTasks = createAsyncThunk('tasks/fetchTasks', (todolistId: string, thunkAPI) => {
+  thunkAPI.dispatch(setAppStatusAC({status: requestStatus.loading}))
+  return todolistsAPI.getTasks(todolistId)
+    .then((res) => {
+      const tasks = res.data.items
+      thunkAPI.dispatch(setAppStatusAC({status: requestStatus.succeeded}))
+      return {tasks, todolistId}
+    })
+})
+
+const _fetchTasksTC = createAsyncThunk(
+  'tasks/fetchTasks',
+  async (todolistId: string, thunkAPI) => {
+    return thunkAPI.dispatch(setAppStatusAC({status: requestStatus.loading}))
+    const res = await  todolistsAPI.getTasks(todolistId)
+    const tasks = res.data.items
+    thunkAPI.dispatch(setAppStatusAC({status: requestStatus.succeeded}))
+    return {tasks, todolistId}
+  }
+)
 export const slice = createSlice({
   name: 'tasks',
   initialState: initialState,
@@ -36,9 +56,6 @@ export const slice = createSlice({
         task[index] = {...task[index], ...action.payload.model}
       }
     },
-    setTasksAC(state, action: PayloadAction<{ tasks: Array<TaskType>, todolistId: string }>) {
-      state[action.payload.todolistId] = action.payload.tasks
-    }
   },
   extraReducers: (builder) => {
     builder.addCase(addTodolistAC, (state, action) => {
@@ -53,21 +70,16 @@ export const slice = createSlice({
     builder.addCase(clearTodolistsDataAC, () => {
       return {}
     });
+    builder.addCase(fetchTasks.fulfilled, (state, action) => {
+      state[action.payload.todolistId] = action.payload.tasks
+    });
   }
 })
 export const tasksReducer = slice.reducer;
-export const {removeTaskAC, addTaskAC, updateTaskAC, setTasksAC} = slice.actions;
+export const {removeTaskAC, addTaskAC, updateTaskAC} = slice.actions;
 
 // thunks
-export const fetchTasksTC = (todolistId: string) => (dispatch: Dispatch) => {
-  dispatch(setAppStatusAC({status: requestStatus.loading}))
-  todolistsAPI.getTasks(todolistId)
-    .then((res) => {
-      const tasks = res.data.items
-      dispatch(setTasksAC({tasks, todolistId}))
-      dispatch(setAppStatusAC({status: requestStatus.succeeded}))
-    })
-}
+
 export const removeTaskTC = (taskId: string, todolistId: string) => (dispatch: Dispatch) => {
   todolistsAPI.deleteTask(todolistId, taskId)
     .then(() => {

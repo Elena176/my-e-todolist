@@ -9,6 +9,20 @@ import {requestStatus} from '../../enum/requestStatus';
 const initialState = {
   isLoggedIn: false
 }
+/*const loginTC = createAsyncThunk(
+  'auth'/'login',
+  async (data: LoginParamsType, { handleServerNetworkError }) => {
+    try {
+      const response = await authAPI.login(data)
+      return response.data
+    } catch (err) {
+      // Use `err.response.data` as `action.payload` for a `rejected` action,
+      // by explicitly returning it using the `rejectWithValue()` utility
+      return handleServerNetworkError(err.response.data)
+    }
+  }
+)*/
+
 
 const slice = createSlice({
   name: 'auth',
@@ -23,6 +37,20 @@ export const authReducer = slice.reducer;
 export const setIsLoggedInAC = slice.actions.setIsLoggedInAC;
 
 // thunks
+/*const loginTC = createAsyncThunk(
+  'auth'/'login',
+  async (data: LoginParamsType, { handleServerNetworkError }) => {
+    try {
+      const response = await authAPI.login(data)
+      return response.data
+    } catch (err) {
+      // Use `err.response.data` as `action.payload` for a `rejected` action,
+      // by explicitly returning it using the `rejectWithValue()` utility
+      return handleServerNetworkError(err.response.data)
+    }
+  }
+)*/
+
 export const loginTC = (data: LoginParamsType) => (dispatch: Dispatch) => {
   dispatch(setAppStatusAC({status: requestStatus.loading}))
   authAPI.login(data)
