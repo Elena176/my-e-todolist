@@ -24,6 +24,7 @@ export const fetchTasks = createAsyncThunk('tasks/fetchTasks', (todolistId: stri
     })
 })
 
+/*
 const _fetchTasksTC = createAsyncThunk(
   'tasks/fetchTasks',
   async (todolistId: string, thunkAPI) => {
@@ -34,6 +35,7 @@ const _fetchTasksTC = createAsyncThunk(
     return {tasks, todolistId}
   }
 )
+*/
 export const slice = createSlice({
   name: 'tasks',
   initialState: initialState,
