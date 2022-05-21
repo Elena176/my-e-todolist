@@ -24,13 +24,11 @@ export const fetchTasks = createAsyncThunk('tasks/fetchTasks', (todolistId: stri
     })
 })
 
-export const removeTask = createAsyncThunk('tasks/removeTask', (param: { taskId: string, todolistId: string }, thunkAPI) => {
+export const removeTask = createAsyncThunk('tasks/removeTask', async (param: { taskId: string, todolistId: string }, thunkAPI) => {
   thunkAPI.dispatch(setAppStatusAC({status: requestStatus.loading}))
-  return todolistsAPI.deleteTask(param.todolistId, param.taskId)
-    .then(() => {
-      thunkAPI.dispatch(setAppStatusAC({status: requestStatus.succeeded}))
-      return {todolistId: param.todolistId, taskId: param.taskId}
-    })
+  await todolistsAPI.deleteTask(param.todolistId, param.taskId)
+  thunkAPI.dispatch(setAppStatusAC({status: requestStatus.succeeded}))
+  return {todolistId: param.todolistId, taskId: param.taskId}
 })
 
 export const slice = createSlice({
@@ -74,7 +72,7 @@ export const slice = createSlice({
   }
 })
 export const tasksReducer = slice.reducer;
-export const { addTaskAC, updateTaskAC} = slice.actions;
+export const {addTaskAC, updateTaskAC} = slice.actions;
 
 // thunks
 

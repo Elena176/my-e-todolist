@@ -2,35 +2,47 @@ import {Dispatch} from 'redux';
 import {authAPI, LoginParamsType} from '../../api/todolists-api';
 import {handleServerAppError, handleServerNetworkError} from '../../utils/error-utils';
 import {clearTodolistsDataAC} from '../TodolistsList/todolists-reducer';
-import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {setAppStatusAC} from '../../app/app-reducer';
 import {requestStatus} from '../../enum/requestStatus';
 
-const initialState = {
-  isLoggedIn: false
-}
-/*const loginTC = createAsyncThunk(
-  'auth'/'login',
-  async (data: LoginParamsType, { handleServerNetworkError }) => {
+const login = createAsyncThunk(
+  'auth/login',
+  async (param: LoginParamsType, thunkAPI) => {
+    thunkAPI.dispatch(setAppStatusAC({status: requestStatus.loading}))
     try {
-      const response = await authAPI.login(data)
-      return response.data
-    } catch (err) {
+      const res = await authAPI.login(param)
+      if (res.data.resultCode === 0) {
+        thunkAPI.dispatch(setAppStatusAC({status: requestStatus.succeeded}))
+        return {isLoggedIn: true}
+      } else {
+        handleServerAppError(res.data,thunkAPI.dispatch)
+        return {isLoggedIn: false}
+      }
+    } catch (err: any) {
       // Use `err.response.data` as `action.payload` for a `rejected` action,
       // by explicitly returning it using the `rejectWithValue()` utility
-      return handleServerNetworkError(err.response.data)
+     handleServerNetworkError(err,thunkAPI.dispatch )
+      return {isLoggedIn: false}
     }
   }
-)*/
+)
 
 
 const slice = createSlice({
   name: 'auth',
-  initialState: initialState,
+  initialState:  {
+    isLoggedIn: false
+  },
   reducers: {
     setIsLoggedInAC(state, action: PayloadAction<{value: boolean}>) {
       state.isLoggedIn = action.payload.value
     }
+  },
+  extraReducers: builder => {
+    builder.addCase(login.fulfilled, (state, action) => {
+        state.isLoggedIn = action.payload.isLoggedIn
+    })
   }
 })
 export const authReducer = slice.reducer;
