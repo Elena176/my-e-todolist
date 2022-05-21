@@ -7,12 +7,18 @@ import FormGroup from '@mui/material/FormGroup';
 import FormLabel from '@mui/material/FormLabel';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import {useFormik} from 'formik';
+import {FormikHelpers, useFormik} from 'formik';
 import {useDispatch, useSelector} from 'react-redux';
 import {Navigate} from 'react-router-dom';
 import {login} from './authReducer';
 import {AppRootStateType} from '../../app/store';
 import {LoginParamsType} from '../../api/todolists-api';
+
+type FormValues = {
+    email: string,
+    password: string,
+    rememberMe: boolean
+}
 
 export const Login = () => {
 const dispatch = useDispatch();
@@ -39,10 +45,9 @@ const isLoginIn = useSelector<AppRootStateType, boolean>(state => state.auth.isL
             }
             return errors;
         },
-        onSubmit: values => {
-            dispatch(login(values))
-            formik.resetForm();
-
+        onSubmit: async(values, formikHelpers:FormikHelpers<FormValues>) => {
+            const res = await dispatch(login(values))
+            // formik.resetForm();
         },
     })
 
