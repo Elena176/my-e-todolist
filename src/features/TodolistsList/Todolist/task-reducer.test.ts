@@ -1,4 +1,11 @@
-import {addTaskAC, fetchTasks, removeTaskAC, tasksReducer, TasksStateType, updateTaskAC} from '../tasks-reducer';
+import {
+  addTaskAC,
+  fetchTasks,
+  removeTask,
+  tasksReducer,
+  TasksStateType,
+  updateTaskAC
+} from '../tasks-reducer';
 import {TaskPriorities, TaskStatuses, TaskType, TodolistType} from '../../../api/todolists-api';
 import {addTodolistAC, removeTodolistAC, setTodolistsAC} from '../todolists-reducer';
 
@@ -85,7 +92,7 @@ beforeEach(() => {
   };
 })
 test('correct task should be deleted from correct array', () => {
-  const endState = tasksReducer(startState, removeTaskAC({taskId: '2', todolistId: 'todolistId2'}))
+  const endState = tasksReducer(startState, removeTask.fulfilled({taskId: '2', todolistId: 'todolistId2'}, '', {taskId: '2', todolistId: 'todolistId2'}))
   expect(endState['todolistId1'].length).toBe(3)
   expect(endState['todolistId2'].length).toBe(2)
   expect(endState['todolistId2'].every(t => t.id !== '2')).toBeTruthy()

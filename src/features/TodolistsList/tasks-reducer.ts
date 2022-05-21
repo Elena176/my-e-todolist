@@ -28,8 +28,8 @@ export const removeTask = createAsyncThunk('tasks/removeTask', (param: { taskId:
   thunkAPI.dispatch(setAppStatusAC({status: requestStatus.loading}))
   return todolistsAPI.deleteTask(param.todolistId, param.taskId)
     .then(() => {
-      thunkAPI.dispatch(removeTaskAC({todolistId: param.todolistId, taskId: param.taskId}))
       thunkAPI.dispatch(setAppStatusAC({status: requestStatus.succeeded}))
+      return {todolistId: param.todolistId, taskId: param.taskId}
     })
 })
 
@@ -37,14 +37,6 @@ export const slice = createSlice({
   name: 'tasks',
   initialState: initialState,
   reducers: {
-    removeTaskAC(state, action: PayloadAction<{ taskId: string, todolistId: string }>) {
-      const task = state[action.payload.todolistId]
-      const index = task.findIndex((t) => t.id === action.payload.taskId)
-      if (index > -1) {
-        task.splice(index, 1)
-      }
-      // {...state, [action.todolistId]: state[action.todolistId].filter(t => t.id !== action.taskId)}
-    },
     addTaskAC(state, action: PayloadAction<TaskType>) {
       state[action.payload.todoListId].unshift(action.payload)
     },
@@ -72,20 +64,20 @@ export const slice = createSlice({
     builder.addCase(fetchTasks.fulfilled, (state, action) => {
       state[action.payload.todolistId] = action.payload.tasks
     });
+    builder.addCase(removeTask.fulfilled, (state, action) => {
+      const task = state[action.payload.todolistId]
+      const index = task.findIndex((t) => t.id === action.payload.taskId)
+      if (index > -1) {
+        task.splice(index, 1)
+      }
+    });
   }
 })
 export const tasksReducer = slice.reducer;
-export const {removeTaskAC, addTaskAC, updateTaskAC} = slice.actions;
+export const { addTaskAC, updateTaskAC} = slice.actions;
 
 // thunks
 
-export const removeTaskTC = (taskId: string, todolistId: string) => (dispatch: Dispatch) => {
-  todolistsAPI.deleteTask(todolistId, taskId)
-    .then(() => {
-      const action = removeTaskAC({taskId, todolistId})
-      dispatch(action)
-    })
-}
 export const addTaskTC = (title: string, todolistId: string) => (dispatch: Dispatch) => {
   dispatch(setAppStatusAC({status: requestStatus.loading}))
   todolistsAPI.createTask(todolistId, title)
