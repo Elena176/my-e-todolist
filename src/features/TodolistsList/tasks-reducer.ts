@@ -24,18 +24,15 @@ export const fetchTasks = createAsyncThunk('tasks/fetchTasks', (todolistId: stri
     })
 })
 
-/*
-const _fetchTasksTC = createAsyncThunk(
-  'tasks/fetchTasks',
-  async (todolistId: string, thunkAPI) => {
-    return thunkAPI.dispatch(setAppStatusAC({status: requestStatus.loading}))
-    const res = await  todolistsAPI.getTasks(todolistId)
-    const tasks = res.data.items
-    thunkAPI.dispatch(setAppStatusAC({status: requestStatus.succeeded}))
-    return {tasks, todolistId}
-  }
-)
-*/
+export const removeTask = createAsyncThunk('tasks/removeTask', (param: { taskId: string, todolistId: string }, thunkAPI) => {
+  thunkAPI.dispatch(setAppStatusAC({status: requestStatus.loading}))
+  return todolistsAPI.deleteTask(param.todolistId, param.taskId)
+    .then(() => {
+      thunkAPI.dispatch(removeTaskAC({todolistId: param.todolistId, taskId: param.taskId}))
+      thunkAPI.dispatch(setAppStatusAC({status: requestStatus.succeeded}))
+    })
+})
+
 export const slice = createSlice({
   name: 'tasks',
   initialState: initialState,
