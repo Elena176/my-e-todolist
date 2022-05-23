@@ -38,7 +38,7 @@ export const todolistsAPI = {
 
 export const authAPI = {
     login(data: LoginParamsType) {
-        return instance.post<LoginParamsType, AxiosResponse<ResponseType<{userId: number}>>>('auth/login', data);
+        return instance.post<LoginParamsType, AxiosResponse<ResponseType<{userId?: number}>>>('auth/login', data);
     },
     logOut() {
         return instance.delete<ResponseType<{userId?: number}>>('auth/login')
@@ -69,10 +69,11 @@ export type TodolistType = {
     addedDate: string
     order: number
 }
+export type FieldErrorType = {error: string, field: string}
 export type ResponseType<D = {}> = {
     resultCode: number
     messages: Array<string>
-    fieldsErrors?: Array<{field: string, error: string}>
+    fieldErrors?: Array<FieldErrorType>
     data: D
 }
 
