@@ -1,11 +1,4 @@
-import {
-  addTaskThunk,
-  fetchTasks,
-  removeTask,
-  tasksReducer,
-  TasksStateType,
-  updateTaskAC
-} from '../tasks-reducer';
+import {addTaskThunk, fetchTasks, removeTask, tasksReducer, TasksStateType, updateTask,} from '../tasks-reducer';
 import {TaskPriorities, TaskStatuses, TaskType, TodolistType} from '../../../api/todolists-api';
 import {addTodolistAC, removeTodolistAC, setTodolistsAC} from '../todolists-reducer';
 
@@ -119,21 +112,23 @@ test('correct task should be added to correct array', () => {
   expect(endState['todolistId2'][0].status).toBe(TaskStatuses.New)
 })
 test('status of specified task should be changed', () => {
-  const endState = tasksReducer(startState, updateTaskAC({
+  let updateModel = {
     taskId: '2',
-    model: {status: TaskStatuses.New},
+    domainModel: {status: TaskStatuses.New},
     todolistId: 'todolistId2'
-  }))
+  };
+  const endState = tasksReducer(startState, updateTask.fulfilled(updateModel, 'requestId', updateModel))
   expect(endState['todolistId1'][1].status).toBe(TaskStatuses.Completed)
   expect(endState['todolistId2'][1].status).toBe(TaskStatuses.New)
 })
 
 test('title of specified task should be changed', () => {
-  const endState = tasksReducer(startState, updateTaskAC({
+  let updateModel = {
     taskId: '2',
-    model: {title: 'butter'},
+    domainModel: {title: 'butter'},
     todolistId: 'todolistId2'
-  }))
+  };
+  const endState = tasksReducer(startState, updateTask.fulfilled(updateModel, 'requestId', updateModel))
   expect(endState['todolistId1'][1].title).toBe('JS')
   expect(endState['todolistId2'][1].title).toBe('butter')
   expect(endState['todolistId2'][0].title).toBe('bread')
