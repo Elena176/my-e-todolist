@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect} from 'react'
-import {useDispatch, useSelector} from 'react-redux'
-import {AppRootStateType} from '../../app/store'
+import {useSelector} from 'react-redux'
+import {AppRootStateType, useAppDispatch} from '../../app/store'
 import {
   addTodolistTC,
   changeTodolistFilterAC,
@@ -10,7 +10,7 @@ import {
   removeTodolistTC,
   TodolistDomainType
 } from './todolists-reducer'
-import {addTaskTC, removeTask, TasksStateType, updateTaskTC} from './tasks-reducer'
+import {addTaskThunk, removeTask, TasksStateType, updateTaskTC} from './tasks-reducer'
 import {TaskStatuses} from '../../api/todolists-api'
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
@@ -25,7 +25,7 @@ type PropsType = {
 export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
   const todolists = useSelector<AppRootStateType, Array<TodolistDomainType>>(state => state.todolists)
   const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch();
   const isLoginIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
 
 
@@ -43,7 +43,7 @@ export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
   }, [dispatch])
 
   const addTask = useCallback(function (title: string, todolistId: string) {
-    const thunk = addTaskTC(title, todolistId)
+    const thunk = addTaskThunk({title, todolistId })
     dispatch(thunk)
   }, [dispatch])
 
