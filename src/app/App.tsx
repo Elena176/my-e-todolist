@@ -16,7 +16,7 @@ import {ErrorSnackbar} from '../components/ErrorSnackbar/ErrorSnackbar'
 import {Navigate, Route, Routes} from 'react-router-dom';
 import {CircularProgress} from '@mui/material';
 import {Login} from '../features/Login/Login';
-import {logOutTC} from '../features/Login/authReducer';
+import {logOut} from '../features/Login/authReducer';
 
 type PropsType = {
   demo?: boolean
@@ -34,7 +34,7 @@ function App({demo = false}: PropsType) {
     }
   }, [dispatch])
   const logOutHandler = useCallback(() => {
-    dispatch(logOutTC())
+    dispatch(logOut())
   }, [dispatch])
 
   if (!isInitialized) {
@@ -72,4 +72,4 @@ function App({demo = false}: PropsType) {
   )
 }
 
-export default App
+export default App;
