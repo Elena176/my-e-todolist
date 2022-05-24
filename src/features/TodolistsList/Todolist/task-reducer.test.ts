@@ -1,5 +1,5 @@
 import {
-  addTaskAC,
+  addTaskThunk,
   fetchTasks,
   removeTask,
   tasksReducer,
@@ -111,7 +111,7 @@ test('correct task should be added to correct array', () => {
     order: 0,
     addedDate: ''
   }
-  const endState = tasksReducer(startState, addTaskAC(newTask))
+  const endState = tasksReducer(startState, addTaskThunk.fulfilled(newTask, 'requestId', {title: newTask.title, todolistId: newTask.todoListId}))
   expect(endState['todolistId1'].length).toBe(3)
   expect(endState['todolistId2'].length).toBe(4)
   expect(endState['todolistId2'][0].id).toBeDefined()
