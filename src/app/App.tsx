@@ -15,8 +15,9 @@ import {ErrorSnackbar} from '../components/ErrorSnackbar/ErrorSnackbar'
 import {Navigate, Route, Routes} from 'react-router-dom';
 import {CircularProgress} from '@mui/material';
 import {Login} from '../features/Login/Login';
-import {logOut} from '../features/Login/authReducer';
-import {selectIsInitialized, selectIsLoggedIn, selectStatus} from './selectors';
+import {logOut} from '../features/Login/loginReducer';
+import {selectIsInitialized, selectStatus} from './selectors';
+import {loginSelectors} from '../features/Login';
 
 type PropsType = {
   demo?: boolean
@@ -26,7 +27,7 @@ function App({demo = false}: PropsType) {
   const dispatch = useDispatch();
   const status = useSelector(selectStatus)
   const isInitialized = useSelector(selectIsInitialized)
-  const isLoggedIn = useSelector(selectIsLoggedIn)
+  const isLoggedIn = useSelector(loginSelectors.selectIsLoggedIn)
 
   useEffect(() => {
     if (!demo) {

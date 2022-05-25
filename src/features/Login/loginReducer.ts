@@ -69,7 +69,7 @@ const slice = createSlice({
     })
   }
 })
-export const authReducer = slice.reducer;
+export const loginReducer = slice.reducer;
 export const setIsLoggedInAC = slice.actions.setIsLoggedInAC;
 
 

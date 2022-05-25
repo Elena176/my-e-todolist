@@ -1,5 +1,5 @@
 import {authAPI} from '../api/todolists-api';
-import {setIsLoggedInAC} from '../features/Login/authReducer';
+import {setIsLoggedInAC} from '../features/Login/loginReducer';
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {requestStatus} from '../enum/requestStatus';
 
