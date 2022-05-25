@@ -2,8 +2,7 @@ import React, {useCallback, useEffect} from 'react'
 import './App.css'
 import {TodolistsList} from '../features/TodolistsList/TodolistsList'
 import {useDispatch, useSelector} from 'react-redux'
-import {AppRootStateType} from './store'
-import {initializeApp, RequestStatusType} from './app-reducer'
+import {initializeApp} from './app-reducer'
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
@@ -17,6 +16,7 @@ import {Navigate, Route, Routes} from 'react-router-dom';
 import {CircularProgress} from '@mui/material';
 import {Login} from '../features/Login/Login';
 import {logOut} from '../features/Login/authReducer';
+import {selectIsInitialized, selectIsLoggedIn, selectStatus} from './selectors';
 
 type PropsType = {
   demo?: boolean
@@ -24,9 +24,9 @@ type PropsType = {
 
 function App({demo = false}: PropsType) {
   const dispatch = useDispatch();
-  const status = useSelector<AppRootStateType, RequestStatusType>((state) => state.app.status)
-  const isInitialized = useSelector<AppRootStateType, boolean>((state) => state.app.isInitialized)
-  const isLoggedIn = useSelector<AppRootStateType, boolean>((state) => state.auth.isLoggedIn)
+  const status = useSelector(selectStatus)
+  const isInitialized = useSelector(selectIsInitialized)
+  const isLoggedIn = useSelector(selectIsLoggedIn)
 
   useEffect(() => {
     if (!demo) {
