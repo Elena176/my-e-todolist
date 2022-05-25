@@ -3,8 +3,8 @@ import {useSelector} from 'react-redux'
 import {AppRootStateType, useAppDispatch} from '../../app/store'
 import {
   addTodolistThunk,
-  changeTodolistFilterAC,
-  changeTodolistTitleTC, fetchTodoLists,
+  changeTodolistFilterAC, changeTodolistTitleThunk,
+  fetchTodoLists,
   FilterValuesType, removeTodolistThunk,
   TodolistDomainType
 } from './todolists-reducer'
@@ -61,13 +61,11 @@ export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
   }, [dispatch])
 
   const changeTodolistTitle = useCallback(function (id: string, title: string) {
-    const thunk = changeTodolistTitleTC(id, title)
-    dispatch(thunk)
+    dispatch(changeTodolistTitleThunk({id, title}))
   }, [dispatch])
 
   const addTodolist = useCallback((title: string) => {
-    const thunk = addTodolistThunk(title)
-    dispatch(thunk)
+    dispatch(addTodolistThunk(title))
   }, [dispatch])
 
   if (!isLoginIn) {
