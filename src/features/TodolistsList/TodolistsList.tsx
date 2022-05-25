@@ -4,10 +4,8 @@ import {AppRootStateType, useAppDispatch} from '../../app/store'
 import {
   addTodolistTC,
   changeTodolistFilterAC,
-  changeTodolistTitleTC,
-  fetchTodolistsTC,
-  FilterValuesType,
-  removeTodolistTC,
+  changeTodolistTitleTC, fetchTodoLists,
+  FilterValuesType, removeTodolistThunk,
   TodolistDomainType
 } from './todolists-reducer'
 import {addTaskThunk, removeTask, TasksStateType, updateTask} from './tasks-reducer'
@@ -33,7 +31,7 @@ export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
     if (demo || !isLoginIn) {
       return;
     }
-    const thunk = fetchTodolistsTC()
+    const thunk = fetchTodoLists()
     dispatch(thunk)
   }, [dispatch, demo, isLoginIn])
 
@@ -48,23 +46,19 @@ export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
   }, [dispatch])
 
   const changeStatus = useCallback(function (id: string, status: TaskStatuses, todolistId: string) {
-    const thunk = updateTask({taskId: id, domainModel: {status}, todolistId})
-    dispatch(thunk)
+    dispatch(updateTask({taskId: id, domainModel: {status}, todolistId}))
   }, [dispatch])
 
   const changeTaskTitle = useCallback(function (id: string, newTitle: string, todolistId: string) {
-    const thunk = updateTask({taskId: id, domainModel: {title: newTitle}, todolistId})
-    dispatch(thunk)
+    dispatch(updateTask({taskId: id, domainModel: {title: newTitle}, todolistId}))
   }, [dispatch])
 
   const changeFilter = useCallback(function (todolistId: string, value: FilterValuesType) {
-    const action = changeTodolistFilterAC({id: todolistId, filter: value})
-    dispatch(action)
+    dispatch(changeTodolistFilterAC({id: todolistId, filter: value}))
   }, [dispatch])
 
-  const removeTodolist = useCallback(function (id: string) {
-    const thunk = removeTodolistTC(id)
-    dispatch(thunk)
+  const removeTodolist = useCallback(function (todolistId: string) {
+   dispatch(removeTodolistThunk({todolistId}))
   }, [dispatch])
 
   const changeTodolistTitle = useCallback(function (id: string, title: string) {
