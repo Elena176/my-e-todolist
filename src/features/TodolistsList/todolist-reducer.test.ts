@@ -1,6 +1,6 @@
 import {TodolistType} from '../../api/todolists-api';
 import {
-  addTodolistAC,
+  addTodolistThunk,
   changeTodolistEntityStatusAC,
   changeTodolistFilterAC,
   changeTodolistTitleAC, fetchTodoLists,
@@ -38,9 +38,9 @@ test('correct todolist should be added', () => {
     addedDate: '',
     order: 0
   }
-  const endState = todolistsReducer(startState, addTodolistAC({todolist:newTodolist}))
+  const endState = todolistsReducer(startState, addTodolistThunk.fulfilled({todolist:newTodolist}, 'requestId', 'New Todolist'))
   expect(endState.length).toBe(3)
-  expect(endState[0].title).toBe(newTodolist.title)
+  expect(endState[0].title).toBe('New Todolist')
 })
 
 test('correct title of todolist should be changed', () => {

@@ -1,6 +1,6 @@
 import {addTaskThunk, fetchTasks, removeTask, tasksReducer, TasksStateType, updateTask,} from '../tasks-reducer';
 import {TaskPriorities, TaskStatuses, TaskType, TodolistType} from '../../../api/todolists-api';
-import {addTodolistAC, fetchTodoLists, removeTodolistThunk} from '../todolists-reducer';
+import {addTodolistThunk, fetchTodoLists, removeTodolistThunk} from '../todolists-reducer';
 
 let startState: TasksStateType
 
@@ -141,7 +141,7 @@ test('new array should be added when new todolist is added', () => {
     addedDate: '',
     order: 0
   }
-  const endState = tasksReducer(startState, addTodolistAC({todolist: newTodolist}))
+  const endState = tasksReducer(startState, addTodolistThunk.fulfilled({todolist: newTodolist}, 'requestId', 'New Todolist'))
   const keys = Object.keys(endState);
   const newKey = keys.find(k => k !== 'todolistId1' && k !== 'todolistId2');
   if (!newKey) {
