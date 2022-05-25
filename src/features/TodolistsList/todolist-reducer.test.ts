@@ -45,8 +45,8 @@ test('correct todolist should be added', () => {
 
 test('correct title of todolist should be changed', () => {
   let newTodoListTitle = 'New Todolist'
-  let newTitle = {id: todoListId2, title: newTodoListTitle};
-  const endState = todolistsReducer(startState, changeTodolistTitleThunk.fulfilled(newTitle, 'requestId', newTitle))
+  let payload = {id: todoListId2, title: newTodoListTitle};
+  const endState = todolistsReducer(startState, changeTodolistTitleThunk.fulfilled(payload, 'requestId', payload))
   expect(endState[1].title).toBe(newTodoListTitle)
   expect(endState[0].title).toBe('What to learn')
 })
