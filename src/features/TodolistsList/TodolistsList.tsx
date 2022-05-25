@@ -2,7 +2,7 @@ import React, {useCallback, useEffect} from 'react'
 import {useSelector} from 'react-redux'
 import {AppRootStateType, useAppDispatch} from '../../app/store'
 import {
-  addTodolistTC,
+  addTodolistThunk,
   changeTodolistFilterAC,
   changeTodolistTitleTC, fetchTodoLists,
   FilterValuesType, removeTodolistThunk,
@@ -41,8 +41,7 @@ export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
   }, [dispatch])
 
   const addTask = useCallback(function (title: string, todolistId: string) {
-    const thunk = addTaskThunk({title, todolistId })
-    dispatch(thunk)
+    dispatch(addTaskThunk({title, todolistId }))
   }, [dispatch])
 
   const changeStatus = useCallback(function (id: string, status: TaskStatuses, todolistId: string) {
@@ -67,7 +66,7 @@ export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
   }, [dispatch])
 
   const addTodolist = useCallback((title: string) => {
-    const thunk = addTodolistTC(title)
+    const thunk = addTodolistThunk(title)
     dispatch(thunk)
   }, [dispatch])
 

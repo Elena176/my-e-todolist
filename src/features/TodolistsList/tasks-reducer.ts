@@ -1,5 +1,5 @@
 import {
-  addTodolistAC,
+  addTodolistThunk,
   clearTodolistsDataAC, fetchTodoLists, removeTodolistThunk,
 } from './todolists-reducer'
 import {TaskPriorities, TaskStatuses, TaskType, todolistsAPI, UpdateTaskModelType} from '../../api/todolists-api'
@@ -92,7 +92,7 @@ export const slice = createSlice({
   initialState: {} as TasksStateType,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(addTodolistAC, (state, action) => {
+    builder.addCase(addTodolistThunk.fulfilled, (state, action) => {
       state[action.payload.todolist.id] = []
     });
     builder.addCase(removeTodolistThunk.fulfilled, (state, action) => {

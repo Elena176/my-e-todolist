@@ -29,13 +29,26 @@ export const removeTodolistThunk = createAsyncThunk('todolist/removeTodoLists', 
   return {id: param.todolistId};
 })
 
+export const addTodolistThunk = createAsyncThunk('todolist/addTodoLists', async(title: string, {
+  dispatch,
+  rejectWithValue
+}) => {
+  dispatch(setAppStatusAC({status: requestStatus.loading}))
+  try {
+    const res = await todolistsAPI.createTodolist(title)
+    dispatch(setAppStatusAC({status: requestStatus.succeeded}))
+    return {todolist: res.data.data.item}
+  }
+  catch (error: any){
+    handleServerNetworkError(error, dispatch)
+    return rejectWithValue(null)
+  }
+})
+
 const slice = createSlice({
   name: 'todoLists',
   initialState: [] as Array<TodolistDomainType>,
   reducers: {
-    addTodolistAC(state, action: PayloadAction<{ todolist: TodolistType }>) {
-      state.unshift({...action.payload.todolist, filter: 'all', entityStatus: requestStatus.idle})
-    },
     changeTodolistTitleAC(state, action: PayloadAction<{ id: string, title: string }>) {
       const index = state.findIndex(tl => tl.id === action.payload.id)
       state[index].title = action.payload.title;
@@ -62,7 +75,10 @@ const slice = createSlice({
       if (index > -1) {
         state.splice(index, 1)
       }
-    })
+    });
+    builder.addCase(addTodolistThunk.fulfilled, (state, action) => {
+      state.unshift({...action.payload.todolist, filter: 'all', entityStatus: requestStatus.idle})
+    });
   }
 })
 
@@ -70,7 +86,6 @@ export const todolistsReducer = slice.reducer
 
 export const {
   changeTodolistEntityStatusAC,
-  addTodolistAC,
   changeTodolistTitleAC,
   changeTodolistFilterAC,
   clearTodolistsDataAC
@@ -78,19 +93,6 @@ export const {
 
 // thunks
 
-export const addTodolistTC = (title: string) => {
-  return (dispatch: Dispatch) => {
-    dispatch(setAppStatusAC({status: requestStatus.loading}))
-    todolistsAPI.createTodolist(title)
-      .then((res) => {
-        dispatch(addTodolistAC({todolist: res.data.data.item}))
-        dispatch(setAppStatusAC({status: requestStatus.succeeded}))
-      })
-      .catch((error) => {
-        handleServerNetworkError(error, dispatch)
-      })
-  }
-}
 export const changeTodolistTitleTC = (id: string, title: string) => {
   return (dispatch: Dispatch) => {
     todolistsAPI.updateTodolist(id, title)
