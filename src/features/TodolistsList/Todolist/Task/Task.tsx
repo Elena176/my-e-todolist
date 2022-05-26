@@ -10,11 +10,11 @@ type TaskPropsType = {
   todolistId: string
   changeTaskStatus: (id: string, status: TaskStatuses, todolistId: string) => void
   changeTaskTitle: (taskId: string, newTitle: string, todolistId: string) => void
-  removeTask: (taskId: string, todolistId: string) => void
+  removeTask: (params: {taskId: string, todolistId: string}) => void
 }
 export const Task = React.memo(({task, todolistId, removeTask, changeTaskStatus, changeTaskTitle}: TaskPropsType) => {
 
-  const onClickHandler = useCallback(() => removeTask(task.id, todolistId), [task.id, todolistId, removeTask]);
+  const onClickHandler = useCallback(() => removeTask({taskId: task.id, todolistId}), [task.id, todolistId, removeTask]);
 
   const onChangeHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     let newIsDoneValue = e.currentTarget.checked

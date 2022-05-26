@@ -1,7 +1,7 @@
 import {tasksReducer, TasksStateType, } from '../tasks-reducer';
 import {TaskPriorities, TaskStatuses, TaskType, TodolistType} from '../../../api/todolists-api';
 import {addTaskThunk, fetchTasks, removeTask, updateTask} from '../task-actions';
-import {addTodolistThunk, fetchTodoLists, removeTodolistThunk} from '../todolists-actions';
+import {addTodolist, fetchTodoLists, removeTodolist} from '../todolists-actions';
 
 let startState: TasksStateType
 
@@ -142,7 +142,7 @@ test('new array should be added when new todolist is added', () => {
     addedDate: '',
     order: 0
   }
-  const endState = tasksReducer(startState, addTodolistThunk.fulfilled({todolist: newTodolist}, 'requestId', 'New Todolist'))
+  const endState = tasksReducer(startState, addTodolist.fulfilled({todolist: newTodolist}, 'requestId', 'New Todolist'))
   const keys = Object.keys(endState);
   const newKey = keys.find(k => k !== 'todolistId1' && k !== 'todolistId2');
   if (!newKey) {
@@ -153,7 +153,7 @@ test('new array should be added when new todolist is added', () => {
 });
 
 test('property with todolistId should be deleted', () => {
-  const endState = tasksReducer(startState, removeTodolistThunk.fulfilled({id: 'todolistId2'}, 'requestId', {todolistId: 'todolistId2'}))
+  const endState = tasksReducer(startState, removeTodolist.fulfilled({id: 'todolistId2'}, 'requestId', {todolistId: 'todolistId2'}))
   const keys = Object.keys(endState);
   expect(keys.length).toBe(1);
   expect(endState['todolistId2']).not.toBeDefined();

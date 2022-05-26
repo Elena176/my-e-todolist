@@ -28,7 +28,7 @@ export const removeTask = createAsyncThunk('tasks/removeTask', async (param: { t
   thunkAPI.dispatch(setAppStatusAC({status: requestStatus.succeeded}))
   return {todolistId: param.todolistId, taskId: param.taskId}
 })
-export const addTaskThunk = createAsyncThunk('tasks/addTask', async (param: { title: string, todolistId: string }, {
+export const addTask = createAsyncThunk('tasks/addTask', async (param: { title: string, todolistId: string }, {
   dispatch,
   rejectWithValue
 }) => {

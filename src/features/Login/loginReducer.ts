@@ -1,6 +1,6 @@
 import {authAPI, FieldErrorType, LoginParamsType} from '../../api/todolists-api';
 import {handleServerAppError, handleServerNetworkError} from '../../utils/error-utils';
-import {clearTodolistsDataAC} from '../TodolistsList/todolists-reducer';
+import {clearTodolistsData} from '../TodolistsList/todolists-reducer';
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {setAppStatusAC} from '../../app/app-reducer';
 import {requestStatus} from '../../enum/requestStatus';
@@ -37,7 +37,7 @@ export const logOut = createAsyncThunk(
       const res = await authAPI.logOut()
       if (res.data.resultCode === 0) {
         thunkAPI.dispatch(setAppStatusAC({status: requestStatus.succeeded}))
-        thunkAPI.dispatch(clearTodolistsDataAC())
+        thunkAPI.dispatch(clearTodolistsData())
         return;
       } else {
         handleServerAppError(res.data, thunkAPI.dispatch);
