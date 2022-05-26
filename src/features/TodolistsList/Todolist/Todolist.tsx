@@ -7,42 +7,36 @@ import {Delete} from '@mui/icons-material';
 import {Task} from './Task/Task'
 import {TaskStatuses, TaskType} from '../../../api/todolists-api'
 import {TodolistDomainType} from '../todolists-reducer'
-import {useActions, useAppDispatch} from '../../../app/store';
+import {useActions} from '../../../app/store';
 import {fetchTasks} from '../task-actions';
-import {todolistsActions} from '../index';
+import {taskActions, todolistsActions} from '../index';
 
 type PropsType = {
   todolist: TodolistDomainType
   tasks: Array<TaskType>
-  addTask: (title: string, todolistId: string) => void
-  changeTaskStatus: (id: string, status: TaskStatuses, todolistId: string) => void
-  changeTaskTitle: (taskId: string, newTitle: string, todolistId: string) => void
-  removeTask: (params: { taskId: string, todolistId: string }) => void
   demo?: boolean
 }
 
-export const Todolist = React.memo(function ({
-                                               todolist,
-                                               tasks,
-                                               addTask,
-                                               removeTask,
-                                               changeTaskTitle,
-                                               changeTaskStatus,
-                                               demo
-                                             }: PropsType) {
-
+export const Todolist = React.memo(function ({todolist, tasks, demo}: PropsType) {
   const {changeTodolistFilter, removeTodolist, changeTodolistTitle} = useActions(todolistsActions)
-  const dispatch = useAppDispatch()
+  const {addTask, updateTask, removeTask, fetchTasks} = useActions(taskActions)
+  const changeStatus = useCallback(function (id: string, status: TaskStatuses, todolistId: string) {
+    updateTask({taskId: id, domainModel: {status}, todolistId})
+  }, [])
+
+  const changeTaskTitle = useCallback(function (id: string, newTitle: string, todolistId: string) {
+    updateTask({taskId: id, domainModel: {title: newTitle}, todolistId})
+  }, [])
 
   useEffect(() => {
     if (demo) {
       return
     }
-    dispatch(fetchTasks(todolist.id))
+    (fetchTasks(todolist.id))
   }, [])
   const addTaskToTodolist = useCallback((title: string) => {
-    addTask(title, todolist.id)
-  }, [addTask, todolist.id])
+    addTask({title, todolistId: todolist.id})
+  }, [todolist.id])
 
   const removeTodolistFrom = () => {
     removeTodolist({todolistId: todolist.id})
@@ -86,7 +80,7 @@ export const Todolist = React.memo(function ({
         tasksForTodolist.map(t => <Task key={t.id} task={t} todolistId={todolist.id}
                                         removeTask={removeTask}
                                         changeTaskTitle={changeTaskTitle}
-                                        changeTaskStatus={changeTaskStatus}
+                                        changeTaskStatus={changeStatus}
         />)
       }
     </div>
