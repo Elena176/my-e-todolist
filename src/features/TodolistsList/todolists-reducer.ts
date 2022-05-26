@@ -2,7 +2,7 @@ import {todolistsAPI, TodolistType} from '../../api/todolists-api'
 import {RequestStatusType, setAppStatusAC} from '../../app/app-reducer'
 import {requestStatus} from '../../enum/requestStatus';
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {handleServerNetworkError} from '../../utils/error-utils';
+import {handleServerAppError, handleServerNetworkError} from '../../utils/error-utils';
 
 
 const fetchTodoLists = createAsyncThunk('todolist/fetchTodoLists', async (param, {
@@ -35,8 +35,13 @@ const addTodolist = createAsyncThunk('todolist/addTodoLists', async (title: stri
   dispatch(setAppStatusAC({status: requestStatus.loading}))
   try {
     const res = await todolistsAPI.createTodolist(title)
-    dispatch(setAppStatusAC({status: requestStatus.succeeded}))
-    return {todolist: res.data.data.item}
+    if(res.data.resultCode === 0) {
+      dispatch(setAppStatusAC({status: requestStatus.succeeded}))
+      return {todolist: res.data.data.item}
+    } else {
+      handleServerAppError(res.data, dispatch)
+      return rejectWithValue(null)
+    }
   } catch (error: any) {
     handleServerNetworkError(error, dispatch)
     return rejectWithValue(null)

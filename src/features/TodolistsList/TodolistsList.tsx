@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useCallback, useEffect} from 'react'
 import {useSelector} from 'react-redux'
 import {AppRootStateType, useActions} from '../../app/store'
 import {TodolistDomainType} from './todolists-reducer'
@@ -19,6 +19,9 @@ export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
   const isLoginIn = useSelector(selectIsLoggedIn)
   const {addTodolist, fetchTodoLists} = useActions(todolistsActions)
 
+  const addTodolistCallBack = useCallback(async(title: string) => {
+    addTodolist(title)
+  }, [])
   useEffect(() => {
     if (demo || !isLoginIn) {
       return;
@@ -32,7 +35,7 @@ export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
 
   return <>
     <Grid container style={{padding: '20px'}}>
-      <AddItemForm addItem={addTodolist}/>
+      <AddItemForm addItem={addTodolistCallBack}/>
     </Grid>
     <Grid container spacing={3} style={{flexWrap: 'nowrap', overflowX: 'scroll'}}>
       {
