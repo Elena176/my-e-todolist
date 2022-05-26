@@ -8,7 +8,7 @@ import {Task} from './Task/Task'
 import {TaskStatuses, TaskType} from '../../../api/todolists-api'
 import {FilterValuesType, TodolistDomainType} from '../todolists-reducer'
 import {useAppDispatch} from '../../../app/store';
-import { fetchTasks } from '../tasks-reducer';
+import {fetchTasks} from '../task-actions';
 
 type PropsType = {
   todolist: TodolistDomainType

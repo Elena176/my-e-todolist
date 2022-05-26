@@ -1,6 +1,7 @@
-import {addTaskThunk, fetchTasks, removeTask, tasksReducer, TasksStateType, updateTask,} from '../tasks-reducer';
+import {tasksReducer, TasksStateType, } from '../tasks-reducer';
 import {TaskPriorities, TaskStatuses, TaskType, TodolistType} from '../../../api/todolists-api';
-import {addTodolistThunk, fetchTodoLists, removeTodolistThunk} from '../todolists-reducer';
+import {addTaskThunk, fetchTasks, removeTask, updateTask} from '../task-actions';
+import {addTodolistThunk, fetchTodoLists, removeTodolistThunk} from '../todolists-actions';
 
 let startState: TasksStateType
 

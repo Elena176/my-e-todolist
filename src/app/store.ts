@@ -28,11 +28,12 @@ export type AppRootStateType = ReturnType<RootReducerType>
 type AppDispatchType = typeof store.dispatch;
 export const useAppDispatch = () => useDispatch<AppDispatchType>()
 
-export function useAction<T extends ActionCreatorsMapObject>(actions: T) {
+export function useActions<T extends ActionCreatorsMapObject>(actions: T) {
   const dispatch = useAppDispatch()
   const boundActions = useMemo(() => {
     return bindActionCreators(actions, dispatch)
   }, [])
+  return boundActions
 }
 
 // а это, чтобы можно было в консоли браузера обращаться к store в любой момент
