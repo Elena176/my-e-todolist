@@ -14,9 +14,8 @@ import {Menu} from '@mui/icons-material';
 import {ErrorSnackbar} from '../components'
 import {Navigate, Route, Routes} from 'react-router-dom';
 import {CircularProgress} from '@mui/material';
-import {logOut} from '../features/Login/loginReducer';
 import {selectIsInitialized, selectStatus} from './selectors';
-import {Login, loginSelectors} from '../features/Login';
+import {Login, loginSelectors, loginActions} from '../features/Login';
 
 type PropsType = {
   demo?: boolean
@@ -34,7 +33,7 @@ function App({demo = false}: PropsType) {
     }
   }, [dispatch])
   const logOutHandler = useCallback(() => {
-    dispatch(logOut())
+    dispatch(loginActions.logOut())
   }, [dispatch])
 
   if (!isInitialized) {

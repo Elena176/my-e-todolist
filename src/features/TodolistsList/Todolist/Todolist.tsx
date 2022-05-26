@@ -18,14 +18,7 @@ type PropsType = {
 
 export const Todolist = React.memo(function ({todolist, tasks, demo}: PropsType) {
   const {changeTodolistFilter, removeTodolist, changeTodolistTitle} = useActions(todolistsActions)
-  const {addTask, updateTask, removeTask, fetchTasks} = useActions(taskActions)
-  const changeStatus = useCallback(function (id: string, status: TaskStatuses, todolistId: string) {
-    updateTask({taskId: id, domainModel: {status}, todolistId})
-  }, [])
-
-  const changeTaskTitle = useCallback(function (id: string, newTitle: string, todolistId: string) {
-    updateTask({taskId: id, domainModel: {title: newTitle}, todolistId})
-  }, [])
+  const {addTask, fetchTasks} = useActions(taskActions)
 
   useEffect(() => {
     if (demo) {
@@ -57,7 +50,6 @@ export const Todolist = React.memo(function ({todolist, tasks, demo}: PropsType)
     id: todolist.id
   }), [todolist.id])
 
-
   let tasksForTodolist = tasks
 
   if (todolist.filter === 'active') {
@@ -77,9 +69,6 @@ export const Todolist = React.memo(function ({todolist, tasks, demo}: PropsType)
     <div>
       {
         tasksForTodolist.map(t => <Task key={t.id} task={t} todolistId={todolist.id}
-                                        removeTask={removeTask}
-                                        changeTaskTitle={changeTaskTitle}
-                                        changeTaskStatus={changeStatus}
         />)
       }
     </div>
