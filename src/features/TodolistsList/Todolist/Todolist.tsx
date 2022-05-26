@@ -7,7 +7,7 @@ import {Delete} from '@mui/icons-material';
 import {Task} from './Task/Task'
 import {TaskStatuses, TaskType} from '../../../api/todolists-api'
 import {TodolistDomainType} from '../todolists-reducer'
-import {useActions} from '../../../app/store';
+import {useActions, useAppDispatch} from '../../../app/store';
 import {taskActions, todolistsActions} from '../index';
 import {requestStatus} from '../../../enum/requestStatus';
 import {Paper} from '@mui/material';
@@ -19,8 +19,9 @@ type PropsType = {
 }
 
 export const Todolist = React.memo(function ({todolist, tasks, demo}: PropsType) {
+  const dispatch = useAppDispatch()
   const {changeTodolistFilter, removeTodolist, changeTodolistTitle} = useActions(todolistsActions)
-  const {addTask, fetchTasks} = useActions(taskActions)
+  const {fetchTasks} = useActions(taskActions)
 
   useEffect(() => {
     if (demo) {
@@ -29,7 +30,16 @@ export const Todolist = React.memo(function ({todolist, tasks, demo}: PropsType)
     (fetchTasks(todolist.id))
   }, [])
   const addTaskToTodolist = useCallback(async(title: string) => {
-    addTask({title, todolistId: todolist.id})
+    const resultAction = await dispatch(
+      taskActions.addTask({title, todolistId: todolist.id}))
+    if (taskActions.addTask.rejected.match(resultAction)) {
+      if (resultAction.payload?.errors?.length) {
+        const errorMessage = resultAction.payload?.errors[0];
+        throw new Error(errorMessage)
+      } else {
+        throw new Error('Some error occured')
+      }
+      }
   }, [todolist.id])
 
   const removeTodolistFrom = () => {
