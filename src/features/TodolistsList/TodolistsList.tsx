@@ -5,7 +5,7 @@ import {TodolistDomainType} from './todolists-reducer'
 import {TasksStateType} from './tasks-reducer'
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
-import {AddItemForm} from '../../components/AddItemForm/AddItemForm'
+import {AddItemForm} from './index'
 import {Todolist} from './Todolist/Todolist'
 import {Navigate} from 'react-router-dom';
 import {selectIsLoggedIn} from '../Login/selectors';

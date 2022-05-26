@@ -1,8 +1,8 @@
 import React, {useCallback, useEffect} from 'react'
 import './App.css'
-import {TodolistsList} from '../features/TodolistsList/TodolistsList'
+import {TodolistsList} from '../features/TodolistsList'
 import {useDispatch, useSelector} from 'react-redux'
-import {initializeApp} from './app-reducer'
+import {asyncInitializeActions} from './app-reducer'
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
@@ -11,13 +11,12 @@ import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import LinearProgress from '@mui/material/LinearProgress';
 import {Menu} from '@mui/icons-material';
-import {ErrorSnackbar} from '../components/ErrorSnackbar/ErrorSnackbar'
+import {ErrorSnackbar} from '../components'
 import {Navigate, Route, Routes} from 'react-router-dom';
 import {CircularProgress} from '@mui/material';
-import {Login} from '../features/Login/Login';
 import {logOut} from '../features/Login/loginReducer';
 import {selectIsInitialized, selectStatus} from './selectors';
-import {loginSelectors} from '../features/Login';
+import {Login, loginSelectors} from '../features/Login';
 
 type PropsType = {
   demo?: boolean
@@ -31,7 +30,7 @@ function App({demo = false}: PropsType) {
 
   useEffect(() => {
     if (!demo) {
-      dispatch(initializeApp())
+      dispatch(asyncInitializeActions.initializeApp())
     }
   }, [dispatch])
   const logOutHandler = useCallback(() => {

@@ -10,10 +10,10 @@ import Button from '@mui/material/Button';
 import {FormikHelpers, useFormik} from 'formik';
 import {useSelector} from 'react-redux';
 import {Navigate} from 'react-router-dom';
-import {loginThunk} from './loginReducer';
 import {useAppDispatch} from '../../app/store';
 import {LoginParamsType} from '../../api/todolists-api';
 import {selectIsLoggedIn} from './selectors';
+import {loginActions} from './index';
 
 type FormValuesType = {
   email: string
@@ -47,8 +47,8 @@ export const Login = () => {
       return errors;
     },
     onSubmit: async (values: FormValuesType, formikHelpers: FormikHelpers<FormValuesType>) => {
-      const action = await dispatch(loginThunk(values))
-      if (loginThunk.rejected.match(action)) {
+      const action = await dispatch(loginActions.loginThunk(values))
+      if (loginActions.loginThunk.rejected.match(action)) {
         if (action.payload?.fieldsErrors?.length) {
           const error = action.payload?.fieldsErrors[0];
           formikHelpers.setFieldError(error.error, error.field)

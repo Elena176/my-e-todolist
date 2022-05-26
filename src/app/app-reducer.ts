@@ -3,7 +3,7 @@ import {setIsLoggedInAC} from '../features/Login/loginReducer';
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {requestStatus} from '../enum/requestStatus';
 
-export const initializeApp = createAsyncThunk(
+const initializeApp = createAsyncThunk(
   'app/initializeApp',
   async (param, {dispatch}) => {
     const res = await authAPI.me()
@@ -13,6 +13,10 @@ export const initializeApp = createAsyncThunk(
     }
   }
 )
+
+export const asyncInitializeActions = {
+  initializeApp
+}
 const slice = createSlice({
   name: 'app',
   initialState: {

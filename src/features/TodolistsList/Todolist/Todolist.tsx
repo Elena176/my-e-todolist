@@ -8,7 +8,6 @@ import {Task} from './Task/Task'
 import {TaskStatuses, TaskType} from '../../../api/todolists-api'
 import {TodolistDomainType} from '../todolists-reducer'
 import {useActions} from '../../../app/store';
-import {fetchTasks} from '../task-actions';
 import {taskActions, todolistsActions} from '../index';
 
 type PropsType = {

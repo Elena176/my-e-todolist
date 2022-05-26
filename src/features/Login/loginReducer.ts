@@ -6,7 +6,7 @@ import {setAppStatusAC} from '../../app/app-reducer';
 import {requestStatus} from '../../enum/requestStatus';
 import {AxiosError} from 'axios';
 
-export const loginThunk = createAsyncThunk<undefined, LoginParamsType, {
+const loginThunk = createAsyncThunk<undefined, LoginParamsType, {
   rejectValue: { errors: Array<string>, fieldsErrors?: Array<FieldErrorType> }
 }>(
   'auth/login',
@@ -29,7 +29,7 @@ export const loginThunk = createAsyncThunk<undefined, LoginParamsType, {
   }
 )
 
-export const logOut = createAsyncThunk(
+const logOut = createAsyncThunk(
   'auth/loginOut',
   async (param, thunkAPI) => {
     thunkAPI.dispatch(setAppStatusAC({status: requestStatus.loading}))
@@ -50,7 +50,11 @@ export const logOut = createAsyncThunk(
   }
 )
 
-const slice = createSlice({
+export const asyncLoginActions = {
+  loginThunk,
+  logOut
+}
+export const slice = createSlice({
   name: 'auth',
   initialState: {
     isLoggedIn: false
