@@ -9,6 +9,8 @@ import {TaskStatuses, TaskType} from '../../../api/todolists-api'
 import {TodolistDomainType} from '../todolists-reducer'
 import {useActions} from '../../../app/store';
 import {taskActions, todolistsActions} from '../index';
+import {requestStatus} from '../../../enum/requestStatus';
+import {Paper} from '@mui/material';
 
 type PropsType = {
   todolist: TodolistDomainType
@@ -59,18 +61,20 @@ export const Todolist = React.memo(function ({todolist, tasks, demo}: PropsType)
     tasksForTodolist = tasks.filter(t => t.status === TaskStatuses.Completed)
   }
 
-  return <div>
-    <h3><EditableSpan value={todolist.title} onChange={changeTodolistTitleIn}/>
-      <IconButton onClick={removeTodolistFrom} disabled={todolist.entityStatus === 'loading'}>
-        <Delete/>
-      </IconButton>
+  return <Paper style={{padding: '10px', position: 'relative'}}>
+    <IconButton onClick={removeTodolistFrom} disabled={todolist.entityStatus === requestStatus.loading} style={{position: 'absolute', right: '5px', top: '2px'}}>
+      <Delete/>
+    </IconButton>
+    <h3>
+      <EditableSpan value={todolist.title} onChange={changeTodolistTitleIn}/>
     </h3>
-    <AddItemForm addItem={addTaskToTodolist} disabled={todolist.entityStatus === 'loading'}/>
+    <AddItemForm addItem={addTaskToTodolist} disabled={todolist.entityStatus === requestStatus.loading}/>
     <div>
       {
         tasksForTodolist.map(t => <Task key={t.id} task={t} todolistId={todolist.id}
         />)
       }
+      {!tasksForTodolist.length && <span style={{color: 'grey',  padding: '10px'}}>No tasks</span>}
     </div>
     <div style={{paddingTop: '10px'}}>
       <Button variant={todolist.filter === 'all' ? 'outlined' : 'text'}
@@ -87,7 +91,7 @@ export const Todolist = React.memo(function ({todolist, tasks, demo}: PropsType)
               color={'secondary'}>Completed
       </Button>
     </div>
-  </div>
+  </Paper>
 })
 
 

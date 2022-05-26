@@ -4,12 +4,10 @@ import {AppRootStateType, useActions} from '../../app/store'
 import {TodolistDomainType} from './todolists-reducer'
 import {TasksStateType} from './tasks-reducer'
 import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
-import {AddItemForm} from './index'
+import {AddItemForm, todolistsActions} from './index'
 import {Todolist} from './Todolist/Todolist'
 import {Navigate} from 'react-router-dom';
 import {selectIsLoggedIn} from '../Login/selectors';
-import {todolistsActions} from './index';
 
 type PropsType = {
   demo?: boolean
@@ -36,19 +34,19 @@ export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
     <Grid container style={{padding: '20px'}}>
       <AddItemForm addItem={addTodolist}/>
     </Grid>
-    <Grid container spacing={3}>
+    <Grid container spacing={3} style={{flexWrap: 'nowrap', overflowX: 'scroll'}}>
       {
         todolists.map(tl => {
           let allTodolistTasks = tasks[tl.id]
 
           return <Grid item key={tl.id}>
-            <Paper style={{padding: '10px'}}>
+            <div style={{width: '300px'}}>
               <Todolist
                 todolist={tl}
                 tasks={allTodolistTasks}
                 demo={demo}
               />
-            </Paper>
+            </div>
           </Grid>
         })
       }
