@@ -1,9 +1,9 @@
-import {tasksReducer} from '../features/TodolistsList/tasks-reducer';
-import {todolistsReducer} from '../features/TodolistsList/todolists-reducer';
+import {tasksReducer} from '../features/TodolistsList';
+import {todolistsReducer} from '../features/TodolistsList';
 import {ActionCreatorsMapObject, bindActionCreators, combineReducers} from 'redux'
 import thunkMiddleware from 'redux-thunk'
-import {appReducer} from './app-reducer'
-import {loginReducer} from '../features/Login/loginReducer';
+import {appReducer} from './'
+import {loginReducer} from '../features/Login';
 import {configureStore} from '@reduxjs/toolkit';
 import {useDispatch} from 'react-redux';
 import {useMemo} from 'react';
@@ -36,6 +36,7 @@ export function useActions<T extends ActionCreatorsMapObject>(actions: T) {
   }, [])
   return boundActions
 }
+
 export type ThunkError = {
   rejectValue: { errors: Array<string>, fieldsErrors?: Array<FieldErrorType> }
 }

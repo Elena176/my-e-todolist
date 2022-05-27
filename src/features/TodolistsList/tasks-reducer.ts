@@ -1,7 +1,7 @@
 import {asyncActions, clearTodolistsData,} from './todolists-reducer'
 import {TaskPriorities, TaskStatuses, TaskType, todolistsAPI, UpdateTaskModelType} from '../../api/todolists-api'
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {setAppStatusAC} from '../../app/app-reducer';
+import {setAppStatusAC} from '../../app';
 import {requestStatus} from '../../enum/requestStatus';
 import {handleAsyncServerNetworkError, handleServerAppError, handleServerNetworkError} from '../../utils/error-utils';
 import {AxiosError} from 'axios';
@@ -28,7 +28,7 @@ const removeTask = createAsyncThunk('tasks/removeTask', async (param: { taskId: 
   thunkAPI.dispatch(setAppStatusAC({status: requestStatus.succeeded}))
   return {todolistId: param.todolistId, taskId: param.taskId}
 })
-const addTask = createAsyncThunk<TaskType, { title: string, todolistId: string }, ThunkError>('tasks/addTask', async (param, thunkAPI: any) => {
+const addTask = createAsyncThunk<TaskType, { title: string, todolistId: string }, ThunkError>('tasks/addTask', async (param, thunkAPI) => {
   thunkAPI.dispatch(setAppStatusAC({status: requestStatus.loading}))
   try {
     const res = await todolistsAPI.createTask(param.todolistId, param.title)
@@ -40,7 +40,7 @@ const addTask = createAsyncThunk<TaskType, { title: string, todolistId: string }
       return thunkAPI.rejectWithValue({errors: res.data.messages, fieldsErrors: res.data.fieldErrors});
     }
   } catch (err: any) {
-    handleAsyncServerNetworkError(err, thunkAPI, false)
+    return handleAsyncServerNetworkError(err, thunkAPI, false)
   }
 })
 const updateTask = createAsyncThunk('tasks/updateTask', async (param: { taskId: string, domainModel: UpdateDomainTaskModelType, todolistId: string }, {

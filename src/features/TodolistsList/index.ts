@@ -1,6 +1,6 @@
-import {asyncTaskActions as taskAsyncActions} from './tasks-reducer';
+import {asyncTaskActions as taskAsyncActions, tasksReducer} from './tasks-reducer';
 import {asyncActions as todolistsAsyncActions} from './todolists-reducer';
-import {slice} from './todolists-reducer';
+import {slice, todolistsReducer} from './todolists-reducer';
 import {TodolistsList} from './TodolistsList';
 import {AddItemForm} from '../../components/AddItemForm/AddItemForm';
 
@@ -17,5 +17,7 @@ export {
   taskActions,
   todolistsActions,
   TodolistsList,
-  AddItemForm
+  AddItemForm,
+  tasksReducer,
+  todolistsReducer
 }
