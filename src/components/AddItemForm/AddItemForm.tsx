@@ -3,8 +3,13 @@ import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import {AddBox} from '@mui/icons-material';
 
+export type AddItemFormSubmitHelperType = {
+  setError: (error: string) => void,
+  setTitle: (title: string) => void
+}
+
 type AddItemFormPropsType = {
-  addItem: (title: string) => Promise<any>
+  addItem: (title: string, helper: { setError: (error: string) => void, setTitle: (title: string) => void }) => void
   disabled?: boolean
 }
 
@@ -14,12 +19,7 @@ export const AddItemForm = React.memo(function ({addItem, disabled = false}: Add
 
   const addItemHandler = async () => {
     if (title.trim() !== '') {
-      try {
-        await addItem(title);
-        setTitle('');
-      } catch (error: any) {
-        setError(error.message)
-      }
+      addItem(title, {setError, setTitle});
     } else {
       setError('Title is required');
     }

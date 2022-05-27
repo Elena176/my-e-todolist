@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect} from 'react'
-import {AddItemForm} from '../../../components/AddItemForm/AddItemForm'
+import {AddItemForm, AddItemFormSubmitHelperType} from '../../../components/AddItemForm/AddItemForm'
 import {EditableSpan} from '../../../components/EditableSpan/EditableSpan'
 import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
@@ -29,17 +29,19 @@ export const Todolist = React.memo(function ({todolist, tasks, demo}: PropsType)
     }
     (fetchTasks(todolist.id))
   }, [])
-  const addTaskToTodolist = useCallback(async(title: string) => {
+  const addTaskToTodolist = useCallback(async (title: string, helper: AddItemFormSubmitHelperType) => {
     const resultAction = await dispatch(
       taskActions.addTask({title, todolistId: todolist.id}))
     if (taskActions.addTask.rejected.match(resultAction)) {
       if (resultAction.payload?.errors?.length) {
         const errorMessage = resultAction.payload?.errors[0];
-        throw new Error(errorMessage)
+        helper.setError(errorMessage);
       } else {
-        throw new Error('Some error occured')
+        helper.setError('Some error occured')
       }
-      }
+    } else {
+      helper.setTitle('');
+    }
   }, [todolist.id])
 
   const removeTodolistFrom = () => {
@@ -72,7 +74,8 @@ export const Todolist = React.memo(function ({todolist, tasks, demo}: PropsType)
   }
 
   return <Paper style={{padding: '10px', position: 'relative'}}>
-    <IconButton onClick={removeTodolistFrom} disabled={todolist.entityStatus === requestStatus.loading} style={{position: 'absolute', right: '5px', top: '2px'}}>
+    <IconButton onClick={removeTodolistFrom} disabled={todolist.entityStatus === requestStatus.loading}
+                style={{position: 'absolute', right: '5px', top: '2px'}}>
       <Delete/>
     </IconButton>
     <h3>
@@ -84,7 +87,7 @@ export const Todolist = React.memo(function ({todolist, tasks, demo}: PropsType)
         tasksForTodolist.map(t => <Task key={t.id} task={t} todolistId={todolist.id}
         />)
       }
-      {!tasksForTodolist.length && <span style={{color: 'grey',  padding: '10px'}}>No tasks</span>}
+      {!tasksForTodolist.length && <span style={{color: 'grey', padding: '10px'}}>No tasks</span>}
     </div>
     <div style={{paddingTop: '10px'}}>
       <Button variant={todolist.filter === 'all' ? 'outlined' : 'text'}
