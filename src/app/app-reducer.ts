@@ -2,6 +2,7 @@ import {authAPI} from '../api';
 import {setIsLoggedIn} from '../features/Login/loginReducer';
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {requestStatus} from '../enum/requestStatus';
+import {InitialStateType, RequestStatusType} from './types';
 
 const initializeApp = createAsyncThunk(
   'app/initializeApp',
@@ -40,15 +41,6 @@ export const slice = createSlice({
 })
 
 export const appReducer = slice.reducer;
-
-export type RequestStatusType = requestStatus;
-export type InitialStateType = {
-  // происходит ли сейчас взаимодействие с сервером
-  status: RequestStatusType
-  // если ошибка какая-то глобальная произойдёт - мы запишем текст ошибки сюда
-  error: string | null
-  isInitialized: boolean
-}
 
 export const {setAppError, setAppStatus} = slice.actions;
 

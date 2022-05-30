@@ -46,7 +46,7 @@ export const Todolist = React.memo(function ({todolist, tasks, demo}: PropsType)
   }, [todolist.id])
 
   const removeTodolistFrom = () => {
-    removeTodolist({todolistId: todolist.id})
+    removeTodolist(todolist.id)
   }
   const changeTodolistTitleIn = useCallback((title: string) => {
     changeTodolistTitle({id: todolist.id, title})

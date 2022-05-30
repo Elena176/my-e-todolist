@@ -26,6 +26,7 @@ const removeTask = createAsyncThunk('tasks/removeTask', async (param: { taskId: 
   thunkAPI.dispatch(setAppStatus({status: requestStatus.succeeded}))
   return {todolistId: param.todolistId, taskId: param.taskId}
 })
+
 const addTask = createAsyncThunk<TaskType, { title: string, todolistId: string }, ThunkError>('tasks/addTask', async (param, thunkAPI) => {
   thunkAPI.dispatch(setAppStatus({status: requestStatus.loading}))
   try {
@@ -86,36 +87,36 @@ export const slice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(asyncActions.addTodolist.fulfilled, (state, action) => {
       state[action.payload.todolist.id] = []
-    });
-    builder.addCase(asyncActions.removeTodolist.fulfilled, (state, action) => {
-      delete state[action.payload.id]
-    });
-    builder.addCase(asyncActions.fetchTodoLists.fulfilled, (state, action) => {
-      action.payload.todoLists.forEach((tl: any) => state[tl.id] = [])
-    });
-    builder.addCase(clearTodolistsData, () => {
-      return {}
-    });
-    builder.addCase(fetchTasks.fulfilled, (state, action) => {
-      state[action.payload.todolistId] = action.payload.tasks
-    });
-    builder.addCase(removeTask.fulfilled, (state, action) => {
-      const task = state[action.payload.todolistId]
-      const index = task.findIndex((t) => t.id === action.payload.taskId)
-      if (index > -1) {
-        task.splice(index, 1)
-      }
-    });
-    builder.addCase(addTask.fulfilled, (state, action) => {
-      state[action.payload.todoListId].unshift(action.payload)
-    });
-    builder.addCase(updateTask.fulfilled, (state, action) => {
-      const task = state[action.payload.todolistId]
-      const index = task.findIndex((t) => t.id === action.payload.taskId)
-      if (index > -1) {
-        task[index] = {...task[index], ...action.payload.domainModel}
-      }
     })
+      .addCase(asyncActions.removeTodolist.fulfilled, (state, action) => {
+        delete state[action.payload.id]
+      })
+      .addCase(asyncActions.fetchTodoLists.fulfilled, (state, action) => {
+        action.payload.todoLists.forEach((tl: any) => state[tl.id] = [])
+      })
+      .addCase(clearTodolistsData, () => {
+        return {}
+      })
+      .addCase(fetchTasks.fulfilled, (state, action) => {
+        state[action.payload.todolistId] = action.payload.tasks
+      })
+      .addCase(removeTask.fulfilled, (state, action) => {
+        const task = state[action.payload.todolistId]
+        const index = task.findIndex((t) => t.id === action.payload.taskId)
+        if (index > -1) {
+          task.splice(index, 1)
+        }
+      })
+      .addCase(addTask.fulfilled, (state, action) => {
+        state[action.payload.todoListId].unshift(action.payload)
+      })
+      .addCase(updateTask.fulfilled, (state, action) => {
+        const task = state[action.payload.todolistId]
+        const index = task.findIndex((t) => t.id === action.payload.taskId)
+        if (index > -1) {
+          task[index] = {...task[index], ...action.payload.domainModel}
+        }
+      })
   }
 })
 

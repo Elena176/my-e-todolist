@@ -63,9 +63,9 @@ export const slice = createSlice({
     builder.addCase(loginThunk.fulfilled, (state) => {
       state.isLoggedIn = true;
     })
-    builder.addCase(logOut.fulfilled, (state) => {
-      state.isLoggedIn = false;
-    })
+      .addCase(logOut.fulfilled, (state) => {
+        state.isLoggedIn = false;
+      })
   }
 })
 export const loginReducer = slice.reducer;
