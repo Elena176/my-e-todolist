@@ -1,6 +1,7 @@
-import {appReducer, InitialStateType, setAppError, setAppStatus} from './app-reducer';
+import {setAppError, setAppStatus, slice} from './app-reducer';
 import {requestStatus} from '../enum/requestStatus';
-
+import {InitialStateType} from './types';
+const {reducer: appReducer} = slice;
 let startState: InitialStateType;
 
 beforeEach(() => {
