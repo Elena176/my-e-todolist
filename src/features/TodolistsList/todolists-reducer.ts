@@ -6,25 +6,21 @@ import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {
   handleAsyncServerAppError,
   handleAsyncServerNetworkError,
-  handleServerNetworkError
 } from '../../utils/error-utils';
 import {ThunkError} from '../../utils/types';
 
 
-const fetchTodoLists = createAsyncThunk('todolist/fetchTodoLists', async (param, {
-  dispatch,
-  rejectWithValue
-}) => {
-  dispatch(setAppStatus({status: requestStatus.loading}))
+const fetchTodoLists = createAsyncThunk('todolist/fetchTodoLists', async (param, thunkAPI) => {
+  thunkAPI.dispatch(setAppStatus({status: requestStatus.loading}))
   const res = await todolistsAPI.getTodolists()
   try {
-    dispatch(setAppStatus({status: requestStatus.succeeded}))
+    thunkAPI.dispatch(setAppStatus({status: requestStatus.succeeded}))
     return {todoLists: res.data}
   } catch (error: any) {
-    handleServerNetworkError(error, dispatch)
-    return rejectWithValue(null)
+    return handleAsyncServerNetworkError(error, thunkAPI)
   }
 })
+
 const removeTodolist = createAsyncThunk('todolist/removeTodoLists', async (param: { todolistId: string }, {
   dispatch
 }) => {
@@ -88,7 +84,7 @@ export const slice = createSlice({
   },
   extraReducers: builder => {
     builder.addCase(fetchTodoLists.fulfilled, (state, action) => {
-      return action.payload.todoLists.map(tl => ({...tl, filter: 'all', entityStatus: requestStatus.idle}))
+      return action.payload.todoLists.map((tl: any) => ({...tl, filter: 'all', entityStatus: requestStatus.idle}))
     });
     builder.addCase(removeTodolist.fulfilled, (state, action) => {
       const index = state.findIndex(tl => tl.id === action.payload.id)
