@@ -1,4 +1,4 @@
-import {TodolistType} from '../../api/todolists-api';
+import {TodolistType} from '../../api/types';
 import {
   asyncActions,
   changeTodolistEntityStatus,

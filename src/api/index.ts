@@ -1,5 +1,6 @@
-import {todolistsAPI} from './todolists-api'
+import {todolistsAPI, authAPI} from './todolists-api'
 
 export {
-  todolistsAPI
+  todolistsAPI,
+  authAPI
 }

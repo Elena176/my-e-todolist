@@ -1,4 +1,4 @@
-import {FieldErrorType} from '../api/todolists-api';
+import {FieldErrorType} from '../api/types';
 import {rootReducer, store} from '../app/store';
 
 export type RootReducerType = typeof rootReducer;

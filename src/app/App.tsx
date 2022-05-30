@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect} from 'react'
 import './App.css'
 import {TodolistsList} from '../features/TodolistsList'
-import {useDispatch, useSelector} from 'react-redux'
+import {useSelector} from 'react-redux'
 import {asyncInitializeActions} from './app-reducer'
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
@@ -15,26 +15,29 @@ import {ErrorSnackbar} from '../components'
 import {Navigate, Route, Routes} from 'react-router-dom';
 import {CircularProgress} from '@mui/material';
 import {selectIsInitialized, selectStatus} from './selectors';
-import {Login, loginSelectors, loginActions} from '../features/Login';
+import {Login, loginActions, loginSelectors} from '../features/Login';
+import {useActions} from '../utils/redux-utils';
 
 type PropsType = {
   demo?: boolean
 }
 
 function App({demo = false}: PropsType) {
-  const dispatch = useDispatch();
   const status = useSelector(selectStatus)
   const isInitialized = useSelector(selectIsInitialized)
   const isLoggedIn = useSelector(loginSelectors.selectIsLoggedIn)
+const {initializeApp} = useActions(asyncInitializeActions)
+const {logOut} = useActions(loginActions)
 
   useEffect(() => {
     if (!demo) {
-      dispatch(asyncInitializeActions.initializeApp())
+      initializeApp()
     }
-  }, [dispatch])
+  }, [])
+
   const logOutHandler = useCallback(() => {
-    dispatch(loginActions.logOut())
-  }, [dispatch])
+    logOut()
+  }, [])
 
   if (!isInitialized) {
     return <div

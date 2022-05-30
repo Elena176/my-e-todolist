@@ -11,7 +11,7 @@ import {FormikHelpers, useFormik} from 'formik';
 import {useSelector} from 'react-redux';
 import {Navigate} from 'react-router-dom';
 import {useAppDispatch} from '../../utils/redux-utils';
-import {LoginParamsType} from '../../api/todolists-api';
+import {LoginParamsType} from '../../api/types';
 import {selectIsLoggedIn} from './selectors';
 import {loginActions} from './index';
 

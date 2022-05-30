@@ -1,6 +1,7 @@
 import {asyncTaskActions, tasksReducer, TasksStateType,} from '../tasks-reducer';
-import {TaskPriorities, TaskStatuses, TaskType, TodolistType} from '../../../api/todolists-api';
+import {TaskType, TodolistType} from '../../../api/types';
 import {asyncActions} from '../todolists-reducer';
+import {TaskPriorities, TaskStatuses} from '../../../enum/responseTask';
 
 
 let startState: TasksStateType
