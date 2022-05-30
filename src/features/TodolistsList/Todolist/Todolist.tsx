@@ -7,7 +7,7 @@ import {Delete} from '@mui/icons-material';
 import {Task} from './Task/Task'
 import {TaskStatuses, TaskType} from '../../../api/todolists-api'
 import {TodolistDomainType} from '../todolists-reducer'
-import {useActions, useAppDispatch} from '../../../app/store';
+import {useActions, useAppDispatch} from '../../../utils/redux-utils';
 import {taskActions, todolistsActions} from '../index';
 import {requestStatus} from '../../../enum/requestStatus';
 import {Paper} from '@mui/material';

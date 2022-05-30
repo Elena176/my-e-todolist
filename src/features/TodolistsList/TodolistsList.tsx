@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect} from 'react'
 import {useSelector} from 'react-redux'
-import {AppRootStateType, useActions, useAppDispatch} from '../../app/store'
+import {useActions, useAppDispatch} from '../../utils/redux-utils'
 import {asyncActions, TodolistDomainType} from './todolists-reducer'
 import {TasksStateType} from './tasks-reducer'
 import Grid from '@mui/material/Grid';
@@ -9,6 +9,7 @@ import {Todolist} from './Todolist/Todolist'
 import {Navigate} from 'react-router-dom';
 import {selectIsLoggedIn} from '../Login/selectors';
 import {AddItemFormSubmitHelperType} from '../../components/AddItemForm/AddItemForm';
+import {AppRootStateType} from '../../utils/types';
 
 type PropsType = {
   demo?: boolean

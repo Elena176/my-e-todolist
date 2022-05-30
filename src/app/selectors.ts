@@ -1,4 +1,4 @@
-import {AppRootStateType} from './store';
+import {AppRootStateType} from '../utils/types';
 import {RequestStatusType} from './app-reducer';
 
 export const selectStatus = (state: AppRootStateType):RequestStatusType => state.app.status;

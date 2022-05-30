@@ -5,7 +5,7 @@ import {setAppStatusAC} from '../../app';
 import {requestStatus} from '../../enum/requestStatus';
 import {handleAsyncServerNetworkError, handleServerAppError, handleServerNetworkError} from '../../utils/error-utils';
 import {AxiosError} from 'axios';
-import {AppRootStateType, ThunkError} from '../../app/store';
+import {AppRootStateType, ThunkError} from '../../utils/types';
 import {todolistsAPI} from '../../api';
 
 const fetchTasks = createAsyncThunk<{ tasks: TaskType[], todolistId: string }, string>('tasks/fetchTasks', async (todolistId, {

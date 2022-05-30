@@ -8,7 +8,7 @@ import {
   handleAsyncServerNetworkError,
   handleServerNetworkError
 } from '../../utils/error-utils';
-import {ThunkError} from '../../app/store';
+import {ThunkError} from '../../utils/types';
 
 
 const fetchTodoLists = createAsyncThunk('todolist/fetchTodoLists', async (param, {
