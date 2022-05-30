@@ -1,16 +1,13 @@
 import React, {useCallback, useEffect} from 'react'
 import {useSelector} from 'react-redux'
 import {useActions, useAppDispatch} from '../../utils/redux-utils'
-import {asyncActions} from './todolists-reducer'
 import Grid from '@mui/material/Grid';
 import {AddItemForm, todolistsActions} from './index'
 import {Todolist} from './Todolist/Todolist'
 import {Navigate} from 'react-router-dom';
 import {selectIsLoggedIn} from '../Login/selectors';
 import {AddItemFormSubmitHelperType} from '../../components/AddItemForm/AddItemForm';
-import {AppRootStateType} from '../../utils/types';
-import {TodolistDomainType} from './types';
-import {TasksStateType} from './Todolist/types';
+import {selectTasks, selectTodoLists} from './selectors';
 
 type PropsType = {
   demo?: boolean
@@ -18,15 +15,15 @@ type PropsType = {
 
 export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
   const dispatch = useAppDispatch();
-  const todolists = useSelector<AppRootStateType, Array<TodolistDomainType>>(state => state.todolists)
-  const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
+  const todolists = useSelector(selectTodoLists)
+  const tasks = useSelector(selectTasks)
   const isLoginIn = useSelector(selectIsLoggedIn)
-  const {addTodolist, fetchTodoLists} = useActions(todolistsActions)
+  const {fetchTodoLists} = useActions(todolistsActions)
 
-  const addTodolistCallBack = useCallback(async(title: string, helper: AddItemFormSubmitHelperType) => {
+  const addTodolistCallBack = useCallback(async (title: string, helper: AddItemFormSubmitHelperType) => {
     const resultAction = await dispatch(
-      asyncActions.addTodolist(title))
-    if (asyncActions.addTodolist.rejected.match(resultAction)) {
+      todolistsActions.addTodolist(title))
+    if (todolistsActions.addTodolist.rejected.match(resultAction)) {
       if (resultAction.payload?.errors?.length) {
         const errorMessage = resultAction.payload?.errors[0];
         helper.setError(errorMessage);
@@ -36,7 +33,7 @@ export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
     } else {
       helper.setTitle('');
     }
-    addTodolist(title)
+    todolistsActions.addTodolist(title)
   }, [])
 
   useEffect(() => {
