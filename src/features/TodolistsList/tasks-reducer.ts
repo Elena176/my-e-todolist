@@ -4,10 +4,9 @@ import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {setAppStatus} from '../../app';
 import {requestStatus} from '../../enum/requestStatus';
 import {handleAsyncServerAppError, handleAsyncServerNetworkError} from '../../utils/error-utils';
-import {AxiosError} from 'axios';
 import {AppRootStateType, ThunkError} from '../../utils/types';
 import {todolistsAPI} from '../../api';
-import {TaskPriorities, TaskStatuses} from '../../enum/responseTask';
+import {TasksStateType, UpdateDomainTaskModelType} from './Todolist/types';
 
 const fetchTasks = createAsyncThunk<{ tasks: TaskType[], todolistId: string }, string>('tasks/fetchTasks', async (todolistId, thunkAPI) => {
   thunkAPI.dispatch(setAppStatus({status: requestStatus.loading}))
@@ -17,10 +16,10 @@ const fetchTasks = createAsyncThunk<{ tasks: TaskType[], todolistId: string }, s
     thunkAPI.dispatch(setAppStatus({status: requestStatus.succeeded}))
     return {tasks, todolistId}
   } catch (error: any) {
-    handleAsyncServerNetworkError(error, thunkAPI, false)
-    return thunkAPI.rejectWithValue(null)
+    return handleAsyncServerNetworkError(error, thunkAPI, false)
   }
 })
+
 const removeTask = createAsyncThunk('tasks/removeTask', async (param: { taskId: string, todolistId: string }, thunkAPI) => {
   thunkAPI.dispatch(setAppStatus({status: requestStatus.loading}))
   await todolistsAPI.deleteTask(param.todolistId, param.taskId)
@@ -42,6 +41,7 @@ const addTask = createAsyncThunk<TaskType, { title: string, todolistId: string }
     return handleAsyncServerNetworkError(err, thunkAPI, false)
   }
 })
+
 const updateTask = createAsyncThunk('tasks/updateTask', async (param: { taskId: string, domainModel: UpdateDomainTaskModelType, todolistId: string }, thunkAPI) => {
   thunkAPI.dispatch(setAppStatus({status: requestStatus.loading}))
   const state = thunkAPI.getState() as AppRootStateType
@@ -68,8 +68,7 @@ const updateTask = createAsyncThunk('tasks/updateTask', async (param: { taskId: 
       return handleAsyncServerAppError(res.data, thunkAPI);
     }
   } catch (err: any) {
-    const error: AxiosError = err;
-    return handleAsyncServerNetworkError(error, thunkAPI)
+    return handleAsyncServerNetworkError(err, thunkAPI)
   }
 })
 
@@ -121,16 +120,3 @@ export const slice = createSlice({
 })
 
 export const tasksReducer = slice.reducer;
-
-// types
-export type UpdateDomainTaskModelType = {
-  title?: string
-  description?: string
-  status?: TaskStatuses
-  priority?: TaskPriorities
-  startDate?: string
-  deadline?: string
-}
-export type TasksStateType = {
-  [key: string]: Array<TaskType>
-}

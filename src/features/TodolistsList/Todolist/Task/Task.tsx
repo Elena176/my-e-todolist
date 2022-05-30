@@ -30,10 +30,11 @@ export const Task = React.memo(({task, todolistId}: TaskPropsType) => {
   }, [task.id, todolistId]);
 
   const onTitleChangeHandler = useCallback((newValue: string) => {
-    updateTask({taskId: task.id, domainModel:{title: newValue}, todolistId})
+    updateTask({taskId: task.id, domainModel: {title: newValue}, todolistId})
   }, [task.id, todolistId]);
 
-  return <div key={task.id} className={task.status === TaskStatuses.Completed ? 'is-done' : ''} style={{position: 'relative'}}>
+  return <div key={task.id} className={task.status === TaskStatuses.Completed ? 'is-done' : ''}
+              style={{position: 'relative'}}>
     <Checkbox
       checked={task.status === TaskStatuses.Completed}
       color="primary"
@@ -41,7 +42,7 @@ export const Task = React.memo(({task, todolistId}: TaskPropsType) => {
     />
 
     <EditableSpan value={task.title} onChange={onTitleChangeHandler}/>
-    <IconButton size= {'medium'} onClick={onClickHandler} style={{position: 'absolute', top: '2px', right: '14px'}}>
+    <IconButton size={'medium'} onClick={onClickHandler} style={{position: 'absolute', top: '2px', right: '14px'}}>
       <Delete fontSize={'small'}/>
     </IconButton>
   </div>

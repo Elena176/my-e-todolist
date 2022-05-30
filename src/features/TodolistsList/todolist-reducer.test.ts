@@ -2,12 +2,13 @@ import {TodolistType} from '../../api/types';
 import {
   asyncActions,
   changeTodolistEntityStatus,
-  changeTodolistFilter, FilterValuesType, TodolistDomainType,
+  changeTodolistFilter,
   todolistsReducer
 } from './todolists-reducer';
 import {v1} from 'uuid';
 import {RequestStatusType} from '../../app/app-reducer';
 import {requestStatus} from '../../enum/requestStatus';
+import {FilterValuesType, TodolistDomainType} from './types';
 
 let todoListId1: string
 let todoListId2: string

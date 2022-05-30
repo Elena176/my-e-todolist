@@ -8,6 +8,7 @@ import {
   handleAsyncServerNetworkError,
 } from '../../utils/error-utils';
 import {ThunkError} from '../../utils/types';
+import {FilterValuesType, TodolistDomainType} from './types';
 
 
 const fetchTodoLists = createAsyncThunk('todolist/fetchTodoLists', async (param, thunkAPI) => {
@@ -110,9 +111,3 @@ export const {
   clearTodolistsData
 } = slice.actions;
 
-// types
-export type FilterValuesType = 'all' | 'active' | 'completed';
-export type TodolistDomainType = TodolistType & {
-  filter: FilterValuesType
-  entityStatus: RequestStatusType
-}
