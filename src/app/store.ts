@@ -1,12 +1,9 @@
-import {tasksReducer} from '../features/TodolistsList';
-import {todolistsReducer} from '../features/TodolistsList';
-import {ActionCreatorsMapObject, bindActionCreators, combineReducers} from 'redux'
+import {tasksReducer, todolistsReducer} from '../features/TodolistsList';
+import {combineReducers} from 'redux'
 import thunkMiddleware from 'redux-thunk'
 import {appReducer} from './'
 import {loginReducer} from '../features/Login';
 import {configureStore} from '@reduxjs/toolkit';
-import {useDispatch} from 'react-redux';
-import {useMemo} from 'react';
 import {FieldErrorType} from '../api/todolists-api';
 
 // объединяя reducer-ы с помощью combineReducers,
@@ -26,16 +23,7 @@ export const store = configureStore({
 export type RootReducerType = typeof rootReducer;
 // определить автоматически тип всего объекта состояния
 export type AppRootStateType = ReturnType<RootReducerType>
-type AppDispatchType = typeof store.dispatch;
-export const useAppDispatch = () => useDispatch<AppDispatchType>()
-
-export function useActions<T extends ActionCreatorsMapObject>(actions: T) {
-  const dispatch = useAppDispatch()
-  const boundActions = useMemo(() => {
-    return bindActionCreators(actions, dispatch)
-  }, [])
-  return boundActions
-}
+export type AppDispatchType = typeof store.dispatch;
 
 export type ThunkError = {
   rejectValue: { errors: Array<string>, fieldsErrors?: Array<FieldErrorType> }

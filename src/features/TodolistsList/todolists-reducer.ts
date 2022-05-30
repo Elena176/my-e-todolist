@@ -1,4 +1,5 @@
-import {todolistsAPI, TodolistType} from '../../api/todolists-api'
+import {TodolistType} from '../../api/todolists-api'
+import {todolistsAPI} from '../../api'
 import {RequestStatusType, setAppStatusAC} from '../../app'
 import {requestStatus} from '../../enum/requestStatus';
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
