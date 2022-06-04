@@ -6,8 +6,8 @@ import {AddItemForm, todolistsActions} from './index'
 import {Todolist} from './Todolist/Todolist'
 import {Navigate} from 'react-router-dom';
 import {selectIsLoggedIn} from '../Login/selectors';
-import {AddItemFormSubmitHelperType} from '../../components/AddItemForm/AddItemForm';
 import {selectTasks, selectTodoLists} from './selectors';
+import {AddItemFormSubmitHelperType} from '../../components/types';
 
 type PropsType = {
   demo?: boolean

@@ -2,16 +2,7 @@ import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
 import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import {AddBox} from '@mui/icons-material';
-
-export type AddItemFormSubmitHelperType = {
-  setError: (error: string) => void,
-  setTitle: (title: string) => void
-}
-
-type AddItemFormPropsType = {
-  addItem: (title: string, helper: { setError: (error: string) => void, setTitle: (title: string) => void }) => void
-  disabled?: boolean
-}
+import {AddItemFormPropsType} from '../types';
 
 export const AddItemForm = React.memo(function ({addItem, disabled = false}: AddItemFormPropsType) {
   let [title, setTitle] = useState('')
