@@ -1,5 +1,4 @@
 import React, {useCallback, useEffect} from 'react'
-import {AddItemFormSubmitHelperType} from '../../../components/AddItemForm/AddItemForm'
 import {EditableSpan, AddItemForm} from '../../../components'
 import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
@@ -12,6 +11,7 @@ import {requestStatus} from '../../../enum/requestStatus';
 import {Paper} from '@mui/material';
 import {TaskStatuses} from '../../../enum/responseTask';
 import {TodolistDomainType} from '../types';
+import {AddItemFormSubmitHelperType} from '../../../components/types';
 
 type PropsType = {
   todolist: TodolistDomainType
